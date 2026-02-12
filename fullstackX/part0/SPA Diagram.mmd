@@ -1,0 +1,34 @@
+---
+config:
+  theme: default
+---
+sequenceDiagram
+    actor User
+    participant Browser
+    participant JSEvent
+    participant Server
+
+    User->>Browser: Open SPA URL
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    Server-->>Browser: HTML
+
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa.css
+    Server-->>Browser: css
+
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    Server-->>Browser: JavaScript
+
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa.json
+    Server-->>Browser: Notes JSON
+
+
+    User->>Browser: Adde a new_spa_note
+
+
+    activate JSEvent
+    Browser->>JSEvent: submit event
+    JSEvent->>JSEvent: Prevent difault reload
+    JSEvent->>Server: POST https://studies.cs.helsinki.fi/exampleapp/new_spa_note
+    Server-->>JSEvent: https://studies.cs.helsinki.fi/exampleapp/spa.json (201 Created)
+    JSEvent->>Browser: Renders notes
+    deactivate JSEvent
