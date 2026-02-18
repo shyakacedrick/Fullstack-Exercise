@@ -1,0 +1,27 @@
+sequenceDiagram
+    actor User
+    participant Browser
+    participant JSEvent
+    participant Server
+
+    User->>Browser: Open SPA URL
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    Server-->>Browser: HTML
+
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa.css
+    Server-->>Browser: css
+
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    Server-->>Browser: JavaScript
+
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa.json
+    Server-->>Browser: Notes JSON
+
+
+    User->>Browser: Reloads
+    activate JSEvent
+    Browser->>JSEvent: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    JSEvent->>Server: sends a fetch() request
+    Server-->>JSEvent: JSON response
+    JSEvent-->>Browser: https://studies.cs.helsinki.fi/exampleapp/spa
+    deactivate JSEvent
