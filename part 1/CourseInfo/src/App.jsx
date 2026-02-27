@@ -1,7 +1,9 @@
 //================================= REFACTORED VERSION ===================================
 
 const Header = (props) => <h1>{props.course}</h1>        // <<-------- defining header and assigning the title to it ----
+
 const Part = (props) => <p>{props.name} {props.exercises}</p>      //<-------- defining header and assigning the title to it ----
+
 const Content = (props) => (           //<-------------- defining Content and assigning 3 children components to it--------
   <div>
     <Part name={props.part1} exercises={props.exercises1} />     {/*<<------- rendering the Part components and envoking the name and exercise----*/}
