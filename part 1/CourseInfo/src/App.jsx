@@ -1,28 +1,26 @@
-//================================= REFACTORED VERSION ===================================
+//================================= EXERCISE 1.1 - 1.3 (REFACTORED VERSION) ===================================
 
-const Header = (props) => <h1>{props.course}</h1>
-
-const Part = (props) => <p>{props.name} {props.exercises}</p>
-
+const Header = (props) => { return <h1>{props.course}</h1> };
+const Part = (props) => { return <p>{props.name} {props.exercises}</p> };
 const Content = (props) => (
   <div>
     <Part name={props.part1} exercises={props.exercises1} />
     <Part name={props.part2} exercises={props.exercises2} />
     <Part name={props.part3} exercises={props.exercises3} />
   </div>
-)
-const Total = (props) => <p>Number of exercises: {props.total}</p>
+);
+const Total = (props) => <p>Number of exercises: {props.total}</p>;
 
 
 
 const App = () => {
-  const course = 'Half Stack application development'    //====== Header component ========
-  const part1 = 'Fundamentals of React:'                //======= Content value "string"===
-  const exercises1 = 10                                //======== Content value number ====
-  const part2 = 'Using props to pass data:'           //========= Content value "string"===
-  const exercises2 = 7                               //========== Content value number ====
-  const part3 = 'State of a component:'             //=========== Content value "string"===
-  const exercises3 = 14                            //============ Content value number ====
+  const course = 'Half Stack application development';
+  const part1 = 'Fundamentals of React:';
+  const exercises1 = 10;
+  const part2 = 'Using props to pass data:';
+  const exercises2 = 7;
+  const part3 = 'State of a component:';
+  const exercises3 = 14;
 
 
   return (    
