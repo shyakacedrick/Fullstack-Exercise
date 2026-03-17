@@ -1,4 +1,4 @@
-//================================= EXERCISE 1.1 - 1.3 (REFACTORED VERSION) ===================================
+//================================= EXERCISE 1.1 - 1.2 (REFACTORED VERSION) ===================================
 
 const Header = (props) => { return <h1>{props.course}</h1> };
 const Part = (props) => { return <p>{props.name} {props.exercises}</p> };
