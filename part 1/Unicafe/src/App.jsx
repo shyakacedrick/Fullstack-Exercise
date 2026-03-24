@@ -1,4 +1,4 @@
-//=========================== EXERCISE 1.7 UNICAFE ===============
+//=========================== EXERCISE 1.8 UNICAFE ===============
 
 import { useState } from "react";
 
