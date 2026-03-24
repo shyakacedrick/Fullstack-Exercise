@@ -1,9 +1,8 @@
-//=========================== EXERCISE 1.8git  UNICAFE ===============
+//=========================== EXERCISE 1.9  UNICAFE ===============
 
 import { useState } from "react";
 
 const Statistics = ({good, neutral, bad}) => {
-  //const all = good + neutral + bad
 
   if (good + neutral + bad === 0) {
   return <div>No feedback given</div>;
