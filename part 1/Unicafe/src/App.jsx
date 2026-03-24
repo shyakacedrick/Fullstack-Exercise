@@ -3,19 +3,21 @@
 import { useState } from "react";
 
 const App = () => {
-  // task: keep track of a counter
-  const [count, setCount] = useState(0);
-
-  // handlers
-  const increase = () => setCount(count + 1);
-  const decrease = () => setCount(count - 1);
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
   return (
     <div>
-      <h1>Counter</h1>
-      <p>Current value: {count}</p>
-      <button onClick={increase}> + </button>
-      <button onClick={decrease}> - </button>
+      <h1>Give feedback</h1>
+      <button onClick={() => setGood(good + 1)}>good</button>
+      <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
+      <button onClick={() => setBad(bad + 1)}>bad</button>
+
+      <h2>Feedback so far</h2>
+      <p>good: {good}</p>
+      <p>neutral: {neutral}</p>
+      <p>bad: {bad}</p>
     </div>
   );
 };
