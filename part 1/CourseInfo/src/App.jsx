@@ -1,5 +1,4 @@
-//================================= EXERCISE 1.5 (REFACTORED VERSION) ===================================
-
+//================================= EXERCISE 1-1 to 1.5 (COURSE INFORMATION) ===================================
 
 const Header = (props) => { return <h1>{props.course}</h1> };
 const Part = (props) => { return <p>{props.name} {props.exercises}</p> };
