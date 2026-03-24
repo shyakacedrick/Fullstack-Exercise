@@ -1,24 +1,38 @@
-//=========================== EXERCISE 1.9  UNICAFE ===============
+//=========================== EXERCISE 1.10 - 1.11  UNICAFE ===============
 
 import { useState } from "react";
 
-const Statistics = ({good, neutral, bad}) => {
+const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>;
+const StatisticLine = ({ text, value }) => (
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
+);
 
-  if (good + neutral + bad === 0) {
-  return <div>No feedback given</div>;
+const Statistics = ({ good, neutral, bad }) => {
+  const total = good + neutral + bad;
+
+  if (total === 0) {
+    return <p>No feedback given</p>;
   }
 
+  const average = (good - bad) / total;
+  const positive = (good / total) * 100;
+
   return (
-    <div>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-    </div>
+    <table>
+      <tbody>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="total" value={total} />
+        <StatisticLine text="average" value={average.toFixed(1)} />
+        <StatisticLine text="positive" value={positive.toFixed(1) + " %"} />
+      </tbody>
+    </table>
   );
 };
-
-
-
 
 const App = () => {
   const [good, setGood] = useState(0);
@@ -29,9 +43,9 @@ const App = () => {
     <div>
       <h1>Give feedback</h1>
 
-      <button onClick={() => setGood(good + 1)}>good</button>
-      <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
-      <button onClick={() => setBad(bad + 1)}>bad</button>
+      <Button handleClick={() => setGood(good + 1)} text="good" />
+      <Button handleClick={() => setNeutral(neutral + 1)} text="neutral" />
+      <Button handleClick={() => setBad(bad + 1)} text="bad" />
 
       <h2>Statistics</h2>
 
