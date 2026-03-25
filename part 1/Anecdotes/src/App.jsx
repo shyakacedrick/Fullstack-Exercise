@@ -33,18 +33,18 @@ const App = () => {
   const bestIndex = votes.indexOf(maxVotes);
 
   return (
-    <div>
+    <>
       <h1>Anecdote of the day</h1>
-      <p>{anecdotes[selected]}</p>
-      <p>has {votes[selected]} votes</p>
+        <p>{anecdotes[selected]}</p>
+        <p>has {votes[selected]} votes</p>
 
       <button onClick={vote}>vote</button>
       <button onClick={nextAnecdote}>next</button>
 
       <h2>Top voted anecdote</h2>
-      <p>{anecdotes[bestIndex]}</p>
-      <p>has {maxVotes} votes</p>
-    </div>
+        <p>{anecdotes[bestIndex]}</p>
+        <p>has {maxVotes} votes</p>
+    </>
   );
 };
 
