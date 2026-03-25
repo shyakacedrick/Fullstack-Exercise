@@ -1,26 +1,18 @@
+# Anecdotes App
 
-# Unicafe Feedback App
-
-A React application for collecting and displaying user feedback.
+A React app that displays random programming anecdotes and allows users to vote.
 
 ## Purpose
-Users can give feedback as:
-- Good 
-- Neutral 
-- Bad 
-
-The app calculates and displays:
-- Total feedback
-- Average score
-- Positive feedback percentage
+- Show a random anecdote
+- Allow users to vote for their favorite
+- Display the anecdote with the highest votes
 
 ## Concepts Learned
-- useState (React state management)
-- Event handling (button clicks)
+- Managing complex state (arrays)
+- Copying and updating state immutably
+- Random number generation
+- Finding max values in arrays
 - Conditional rendering
-- Component reuse
-- Data calculations in UI
-- Rendering tables in React
 
 ## How to Run
 ```bash
