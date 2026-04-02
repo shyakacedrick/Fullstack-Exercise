@@ -1,7 +1,14 @@
 import React from 'react'
+import "./index.css";
 
-const Header = ({course}) => { return <h1>{course}</h1> };
-const Part = ({part}) => { return <p>{part.name} {part.exercises}</p> };
+const Header = ({course}) => { return <h1 style={{}}>{course}</h1> };
+const Part = ({part}) => { 
+  return(
+    <div>
+      <p>{part.name} {part.exercises}</p> 
+    </div>
+  ) 
+};
 
 const Content = ({parts}) => {
   return (
@@ -15,7 +22,13 @@ const Total = ({parts}) => {
 
   const total = parts.reduce((sum, part) => sum + part.exercises, 0)
   
-  return <p> Total of exercises: {total}</p>;
+  return (
+    <p>
+      <b>
+        Total of exercises: {total}
+      </b>
+    </p>
+  );
 }
   
   

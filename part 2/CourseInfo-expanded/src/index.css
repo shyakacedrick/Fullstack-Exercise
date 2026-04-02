@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1, p {
+    margin: 0 0 10px;
+}
+h1 {
+    color: darkblue;
+}
+p {
+    font-size: 20px;
+}
+div {
+    gap: 10px;
+}
