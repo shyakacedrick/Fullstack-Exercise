@@ -1,4 +1,4 @@
-//================================= EXERCISE 2.1 (COURSE INFORMATION EXPANDED (step 6)) ===================================
+//================================= EXERCISE 2.2 (COURSE INFORMATION EXPANDED (step 6)) ===================================
 
 import React from 'react'
 import Course from './Course';
