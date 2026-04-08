@@ -2,17 +2,15 @@ import React, {useState} from 'react'
 
 const App = () => {
   const [notes, setNote] = useState([
-    {id: 1, topic: 'Math', content: 'content 1', isComplicated: true},
-    {id: 2, topic: 'Chemistry', content: 'content 2', isComplicated: false},
-    {id: 3, topic: 'Computer Science', content: 'content 3', isComplicated: false},
-    {id: 4, topic: 'English', content: 'content 4', isComplicated: true},
+    {id: 1, topic: 'Math', content: 'content A', number: 1234, isComplicated: true},
+    {id: 2, topic: 'Chemistry', content: 'content B', number: 4567, isComplicated: false},
+    {id: 3, topic: 'Computer Science', content: 'content C', number: 7890, isComplicated: false},
+    {id: 4, topic: 'English', content: 'content D', number: 9876, isComplicated: true},
   ])
-
+  
   const [newNote, setNewNote] = useState('')
-  const handler = (e) => {
-    setNewNote(e.target.value) 
-    console.log(e.target.value)
-  }
+  const [number, setNumber] = useState('')
+
   const Add = (e) => {
     e.preventDefault()
     
@@ -20,29 +18,32 @@ const App = () => {
     if (duplicate) { alert( `${newNote} already exist in the PhoneBook`); return }
 
     const Added = {
-      id: String(notes.length + 1),
+      id: String(Date.now()),
       content: newNote,
+      number: number,
       isComplicated: Math.random() > 0.5,
     }
 
     setNote(notes.concat(Added))
     setNewNote('')
+    setNumber('')
     console.table(Added)
   }
+  console.log('Content: ', newNote , "\n", 'Number: ', number)
 
   return (
     <div>
       <h1>PhoneBook</h1>
         <form onSubmit={Add}>
-          <input value={newNote} onChange={handler} placeholder='Add content 5...'/>
-          <button>Add</button>
+          <input value={newNote} onChange={(e) => setNewNote(e.target.value)}  placeholder='Add content 5...'/>
+          <input value={number} onChange={(e) => setNumber(e.target.value)} placeholder='Add number...'/> <br />
+          <button type='submit'>Add</button>
         </form>
         <br />
-        <i>Debug: {newNote}</i>
       
       <h1>Notes</h1>
         <ul>
-          {notes.map(n => <li key={n.id}>{n.content}</li>)}
+          {notes.map(n => <li key={n.id}>{n.content} : {n.number}</li>)}
         </ul>
     </div>
   )
