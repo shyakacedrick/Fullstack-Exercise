@@ -16,6 +16,9 @@ const App = () => {
   const Add = (e) => {
     e.preventDefault()
     
+    const duplicate = notes.find(n => n.content.toLowerCase() === newNote.toLowerCase())
+    if (duplicate) { alert( `${newNote} already exist in the PhoneBook`); return }
+
     const Added = {
       id: String(notes.length + 1),
       content: newNote,
