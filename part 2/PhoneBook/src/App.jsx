@@ -11,7 +11,7 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const handler = (e) => {
     setNewNote(e.target.value) 
-    // console.log(e.target.value)
+    console.log(e.target.value)
   }
   const Add = (e) => {
     e.preventDefault()
