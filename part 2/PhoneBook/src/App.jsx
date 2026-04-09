@@ -2,64 +2,61 @@ import React, {useState} from 'react'
 
 const App = () => {
   const [notes, setNote] = useState([
-    {id: 1, topic: 'Math', content: 'content A', number: 1234, isComplicated: true},
-    {id: 2, topic: 'Chemistry', content: 'content B', number: 4567, isComplicated: false},
-    {id: 3, topic: 'Computer Science', content: 'content C', number: 7890, isComplicated: false},
-    {id: 4, topic: 'English', content: 'content D', number: 9876, isComplicated: true},
+    {id: 1, name: 'Ronaldinho', content: 'I learned all about life with a ball at my feet.', yearOfBirth: 1980, isSingle: true},
+    {id: 2, name: 'Messi', content: 'I\'m more worried about being a good person than being the best football player in the world.', yearOfBirth: 1985, isSingle: false},
+    {id: 3, name: 'Christiano', content: 'Talent without working hard is nothing.', yearOfBirth: 1987, isSingle: false},
+    {id: 4, name: 'Mbappe', content: 'It\'s not over until I win', yearOfBirth: 1998, isSingle: true},
   ])
   
   const [newNote, setNewNote] = useState('')
-  const [number, setNumber] = useState('')
-  const [search, setSearch] = useState ('')
+  const [newContent, setNewContent] = useState('')
+  const [yearOfBirth, setNumber] = useState('')
+  const [filter, setFilter] = useState ('')
 
-  const Add = (e) => {
+  const AddName = (e) => {
     e.preventDefault()
     
-    const duplicate = notes.find(n => n.content.toLowerCase() === newNote.toLowerCase())
+    const duplicate = notes.find(n => n.name.toLowerCase() === newNote.toLowerCase())
     if (duplicate) { alert( `${newNote} already exist in the PhoneBook`); return }
 
-    const Added = {
+    const addedNote = {
       id: String(Date.now()),
-      content: newNote,
-      number: number,
-      isComplicated: Math.random() > 0.5,
+      name: newNote,
+      content: newContent,
+      yearOfBirth: yearOfBirth,
+      isSingle: Math.random() > 0.5,
     }
 
-    setNote(notes.concat(Added))
+    setNote([...notes, addedNote])
     setNewNote('')
+    setNewContent('')
     setNumber('')
-    console.table(Added)
+
+    console.table(addedNote)
   }
    
- const handleSearch = (e)=>{
-    setSearch(e.target.value)
-    console.log(e.target.value)
- }
+  const handleSearch = (e)=>{ setFilter(e.target.value); console.log(e.target.value)}
+  const search = notes.filter(note => note.name.toLowerCase().includes(filter.toLowerCase()))
 
-
-  const filteredNotes = notes.filter(note => note.content.toLowerCase().includes(search.toLowerCase()))
-
-  // console.log('Content: ', newNote , "\n", 'Number: ', number)
+  //console.log('Name: ', newNote , "\n", 'Year: ', yearOfBirth)
 
   return (
     <div>
-      <h1>PhoneBook</h1>
+
       <div>
-        Search: <input value={search} onChange={handleSearch}/>
+        <input value={filter} onChange={handleSearch} placeholder="Search name"/>
       </div>
-        <form onSubmit={Add}>
 
-          <input value={newNote} onChange={(e) => setNewNote(e.target.value)}  placeholder='Add content 5...'/>
-
-          <input value={number} onChange={(e) => setNumber(e.target.value)} placeholder='Add number...'/> <br />
-
+      <h1>PhoneBook</h1>
+        <form onSubmit={AddName}>
+          <input value={newNote} onChange={(e) => setNewNote(e.target.value)}  placeholder='Add Name'/> &nbsp;
+          <input value={yearOfBirth} onChange={(e) => setNumber(e.target.value)} placeholder='Add year Of Birth'/> <pre />
           <button type='submit'>Add</button>
         </form>
-        <br />
       
-      <h1>Notes</h1>
+      <h2>Names</h2>
         <ul>
-          {filteredNotes.map(n => <li key={n.id}>{n.content} : {n.number}</li>)}
+          {search.map(n => <li key={n.id}>{n.name} : {n.yearOfBirth}</li>)}
         </ul>
     </div>
   )
