@@ -1,0 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: aliceblue;
+}
+
+table {
+    border: 1px solid black;
+    width: 100%;
+    height: min(8rem);
+    
+    td, th {
+        border: 1px solid black;
+        text-transform: capitalize;
+        text-align: center;
+        height: min(2rem);
+    }
+
+    .person {
+        td:nth-child(3) {
+            width: min(70%);
+            padding: 5px;
+        }
+    }
+}
+
+.parent {
+    /* background-color: rgb(112, 147, 178); */
+    padding: 30px 30px;
+    display: grid;
+    gap: 1rem;
+
+    div {
+        margin: 0px 10px;
+        padding: 5px;
+    }
+    .filter {
+        .val5 { padding: 5px 5px; outline: none;}
+        
+    }
+
+    .form{
+        .val1, .val2, .val3 {
+            margin: 10px 15px 15px 0;
+            padding: 5px 5px;
+            outline: none;
+        }
+        #val4 {
+            padding: 3px 15px
+        }
+    }
+}
