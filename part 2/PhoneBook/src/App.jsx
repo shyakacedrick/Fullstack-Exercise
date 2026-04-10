@@ -1,4 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import axios from 'axios'
+
 import './index.css'
 import PersonList from './components/PersonList'
 import Form from './components/form'
@@ -12,17 +14,19 @@ const Filter = ({value, onChange}) => (
   />
 )
 const App = () => {
-  const [persons, setPersons] = useState([
-    {id: 1, name: 'Christiano', quote: 'Talent without working hard is nothing.', yearOfBirth: 1987, isSingle: false},
-    {id: 2, name: 'Ronaldinho', quote: 'I learned all about life with a ball at my feet.', yearOfBirth: 1980, isSingle: true},
-    {id: 3, name: 'Messi', quote: 'I\'m more worried about being a good person than being the best football player in the world.', yearOfBirth: 1985, isSingle: true},
-    {id: 4, name: 'Mbappe', quote: 'It\'s not over until I win', yearOfBirth: 1998, isSingle: true},
-  ])
-  
+  const [persons, setPersons] = useState([])
   const [newNote, setNewNote] = useState('')
   const [yearOfBirth, setYearOfBirth] = useState('')
   const [newQuote, setNewQuote] = useState('')
   const [filter, setFilter] = useState ('')
+
+  useEffect(() => {
+  axios
+    .get('http://localhost:3001/persons')
+    .then(response => {
+      setPersons(response.data)
+    })
+}, [])
 
   const AddName = (e) => {
     e.preventDefault()
