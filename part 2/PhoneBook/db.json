@@ -1,29 +1,36 @@
 {
   "persons": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Christiano",
       "quote": "Talent without working hard is nothing",
       "yearOfBirth": "1987"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Ronaldinho",
       "quote": "I learned all about life with a ball at my feet.",
       "yearOfBirth": "1987"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Messi",
       "quote": "I'm more worried about being a good person than being the best football player in the world.",
       "yearOfBirth": "1985"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Mbappe",
       "quote": "It's not over until I win",
       "yearOfBirth": "1998"
+    },
+    {
+      "name": "name",
+      "quote": "a quote",
+      "yearOfBirth": "1234",
+      "isSingle": true,
+      "id": "NLuT7fhqUVE"
     }
-   
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

@@ -21,12 +21,9 @@ const App = () => {
   const [filter, setFilter] = useState ('')
 
   useEffect(() => {
-  axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      setPersons(response.data)
-    })
-}, [])
+    axios.get('http://localhost:3001/persons').then(response => {
+        setPersons(response.data)
+        })}, [])
 
   const AddName = (e) => {
     e.preventDefault()
@@ -35,18 +32,19 @@ const App = () => {
     if (duplicate) { alert( `${newNote} already exist in the PhoneBook`); return }
 
     const addedNote = {
-      id: String(Date.now()),
       name: newNote,
       quote: newQuote,
       yearOfBirth: yearOfBirth,
       isSingle: Math.random() > 0.5,
     }
 
-    setPersons([...persons, addedNote])
-    setNewNote('')
-    setNewQuote('')
-    setYearOfBirth('')
-
+    axios.post('http://localhost:3001/persons', addedNote).then(response => {
+        setPersons(persons.concat(response.data))
+        setNewNote('')
+        setNewQuote('')
+        setYearOfBirth('')
+      })
+    
     console.table(addedNote)
   }
 
