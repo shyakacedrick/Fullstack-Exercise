@@ -1,6 +1,6 @@
 import '/src/index.css'
 
-const PersonList = ({persons}) => (
+const PersonList = ({persons, onDelete}) => (
   
      <table>
         <thead>
@@ -12,18 +12,19 @@ const PersonList = ({persons}) => (
         </thead>
 
         <tbody>
-          {persons.map(n => <SinglePerson key={n.id} person={n}/>)}
+          {persons.map(n => <SinglePerson key={n.id} person={n} onDelete={onDelete}/>)}
         </tbody>
      </table>
 
 )
 
-const SinglePerson = ({person}) => (
+const SinglePerson = ({person, onDelete}) => (
 
     <tr className='person'>
       <td>{person.name}</td>
       <td>{person.yearOfBirth}</td>
       <td><i>"{person.quote}"</i></td>
+      <td><button onClick={() => onDelete(person.id)}>Delete</button></td>
     </tr>
 
 )

@@ -50,6 +50,15 @@ const App = () => {
   const noteHandler = (e) => setNewNote(e.target.value)
   const quoteHandler = (e) =>  setNewQuote(e.target.value)
   const yearHandler = (e) =>  setYearOfBirth(e.target.value)
+
+  const handleDelete = (id) => {
+    const person = persons.find(p => p.id === id)
+      if (window.confirm(`Delete ${person.name}?`)) {
+        personService.remove(id).then(() => {
+          setPersons(persons.filter(p => p.id !== id))
+      })
+    }
+  }
    
   const handleSearch = (e)=>{ setFilter(e.target.value); console.log(e.target.value)}
   const filteredPersons = persons.filter(note => note.name.toLowerCase().includes(filter.toLowerCase()))
@@ -72,7 +81,7 @@ const App = () => {
       
       <div className='names'>
         <h2>Names</h2>
-        <PersonList persons={filteredPersons}/>
+        <PersonList persons={filteredPersons} onDelete={handleDelete}/>
       </div>
     </div>
   )
