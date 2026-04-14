@@ -23,6 +23,12 @@
       "name": "Mbappe",
       "quote": "It's not over until I win",
       "yearOfBirth": "1998"
+    },
+    {
+      "name": "Gilbert",
+      "quote": "Code with focus",
+      "yearOfBirth": "1234",
+      "id": "MYsdESNHmTc"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

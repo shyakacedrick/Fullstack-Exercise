@@ -10,8 +10,8 @@ const Filter = ({value, onChange}) => (
     value={value} 
     onChange={onChange} 
     placeholder="Search name" 
-  />
-)
+  />)
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newNote, setNewNote] = useState('')
@@ -19,49 +19,72 @@ const App = () => {
   const [newQuote, setNewQuote] = useState('')
   const [filter, setFilter] = useState ('')
 
-  useEffect(() => {
+    useEffect(() => {
       personService.getAll().then(data => {
       setPersons(data)
-        })}, [])
+      })
+    }, [])
 
-  const AddName = (e) => {
-    e.preventDefault()
+    const AddName = (e) => {
+      e.preventDefault()
+
+      const duplicate = persons.find(p => p.name.toLowerCase() === newNote.toLowerCase())
     
-    const duplicate = persons.find(n => n.name.toLowerCase() === newNote.toLowerCase())
-    if (duplicate) { alert( `${newNote} already exist in the PhoneBook`); return }
-
-    const addedNote = {
-      name: newNote,
-      quote: newQuote,
-      yearOfBirth: yearOfBirth,
-      isSingle: Math.random() > 0.5,
-    }
-
+      if (duplicate) {
+        const confirmUpdate = window.confirm(
+          `${newNote} is already added to the phonebook, replace the year of birth with a new one?`
+        )
+      
+        if (confirmUpdate) {
+          // Create a new object that is a copy of the old one, but with updated values
+          const changedPerson = { ...duplicate, quote: newQuote, yearOfBirth: yearOfBirth }
+        
+          personService
+            .update(duplicate.id, changedPerson)
+            .then(returnedPerson => {
+              setPersons(persons.map(p => p.id !== duplicate.id ? p : returnedPerson))
+              setNewNote('')
+              setNewQuote('')
+              setYearOfBirth('')
+            })
+            .catch(error => {
+              alert(`The person '${error.duplicate.name}' was already deleted from server`)
+              setPersons(persons.filter(p => p.id !== duplicate.id))
+            })
+        }
+        return
+      }
+    
+      const addedNote = {
+        name: newNote,
+        quote: newQuote,
+        yearOfBirth: yearOfBirth
+      }
+    
       personService.create(addedNote).then(data => {
-      setPersons(persons.concat(data))
-      setNewNote('')
-      setNewQuote('')
-      setYearOfBirth('')
-    })
-    
-    console.table(addedNote)
-  }
-
-  const noteHandler = (e) => setNewNote(e.target.value)
-  const quoteHandler = (e) =>  setNewQuote(e.target.value)
-  const yearHandler = (e) =>  setYearOfBirth(e.target.value)
-
-  const handleDelete = (id) => {
-    const person = persons.find(p => p.id === id)
-      if (window.confirm(`Delete ${person.name}?`)) {
-        personService.remove(id).then(() => {
-          setPersons(persons.filter(p => p.id !== id))
+        setPersons(persons.concat(data))
+        setNewNote('')
+        setNewQuote('')
+        setYearOfBirth('')
       })
     }
-  }
-   
-  const handleSearch = (e)=>{ setFilter(e.target.value); console.log(e.target.value)}
-  const filteredPersons = persons.filter(note => note.name.toLowerCase().includes(filter.toLowerCase()))
+
+
+    const noteHandler = (e) => setNewNote(e.target.value)
+    const quoteHandler = (e) =>  setNewQuote(e.target.value)
+    const yearHandler = (e) =>  setYearOfBirth(e.target.value)
+
+    const handleDelete = (id) => {
+      const person = persons.find(p => p.id === id)
+        if (window.confirm(`Delete ${person.name}?`)) {
+          personService.remove(id).then(() => {
+            setPersons(persons.filter(p => p.id !== id))
+        })
+      }
+    }
+
+    const handleSearch = (e)=>{ setFilter(e.target.value); console.log(e.target.value)}
+    const filteredPersons = persons.filter(note => note.name.toLowerCase().includes(filter.toLowerCase()))
 
   return (
     <div className='parent'>
