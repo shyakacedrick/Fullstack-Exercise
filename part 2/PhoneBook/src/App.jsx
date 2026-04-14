@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import axios from 'axios'
-
+import {useState, useEffect} from 'react'
+import personService from '/src/services/persons.js'
 import './index.css'
 import PersonList from './components/PersonList'
 import Form from './components/form'
@@ -21,8 +20,8 @@ const App = () => {
   const [filter, setFilter] = useState ('')
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then(response => {
-        setPersons(response.data)
+      personService.getAll().then(data => {
+      setPersons(data)
         })}, [])
 
   const AddName = (e) => {
@@ -38,12 +37,12 @@ const App = () => {
       isSingle: Math.random() > 0.5,
     }
 
-    axios.post('http://localhost:3001/persons', addedNote).then(response => {
-        setPersons(persons.concat(response.data))
-        setNewNote('')
-        setNewQuote('')
-        setYearOfBirth('')
-      })
+      personService.create(addedNote).then(data => {
+      setPersons(persons.concat(data))
+      setNewNote('')
+      setNewQuote('')
+      setYearOfBirth('')
+    })
     
     console.table(addedNote)
   }

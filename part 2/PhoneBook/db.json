@@ -23,14 +23,6 @@
       "name": "Mbappe",
       "quote": "It's not over until I win",
       "yearOfBirth": "1998"
-    },
-    {
-      "name": "name",
-      "quote": "a quote",
-      "yearOfBirth": "1234",
-      "isSingle": true,
-      "id": "NLuT7fhqUVE"
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }
