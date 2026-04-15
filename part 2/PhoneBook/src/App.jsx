@@ -3,6 +3,7 @@ import personService from '/src/services/persons.js'
 import './index.css'
 import PersonList from './components/PersonList'
 import Form from './components/form'
+import Notification from './components/notification'
 
 const Filter = ({value, onChange}) => (
   <input 
@@ -19,6 +20,9 @@ const App = () => {
   const [newQuote, setNewQuote] = useState('')
   const [filter, setFilter] = useState ('')
 
+  const [message, setMessage] = useState(null)
+  const [type, setType] = useState(null)
+
     useEffect(() => {
       personService.getAll().then(data => {
       setPersons(data)
@@ -29,46 +33,63 @@ const App = () => {
       e.preventDefault()
 
       const duplicate = persons.find(p => p.name.toLowerCase() === newNote.toLowerCase())
-    
-      if (duplicate) {
-        const confirmUpdate = window.confirm(
-          `${newNote} is already added to the phonebook, replace the year of birth with a new one?`
-        )
-      
-        if (confirmUpdate) {
-          // Create a new object that is a copy of the old one, but with updated values
-          const changedPerson = { ...duplicate, quote: newQuote, yearOfBirth: yearOfBirth }
+
+        if (duplicate) {
+          const confirmUpdate = window.confirm(
+            `${duplicate.name} is already added. Replace the old data?`
+          )
         
-          personService
-            .update(duplicate.id, changedPerson)
-            .then(returnedPerson => {
-              setPersons(persons.map(p => p.id !== duplicate.id ? p : returnedPerson))
-              setNewNote('')
-              setNewQuote('')
-              setYearOfBirth('')
-            })
-            .catch(error => {
-              alert(`The person '${error.duplicate.name}' was already deleted from server`)
-              setPersons(persons.filter(p => p.id !== duplicate.id))
-            })
+          if (confirmUpdate) {
+            const updatedPerson = {
+              ...duplicate,
+              quote: newQuote,
+              yearOfBirth: yearOfBirth
+            }
+          
+            personService
+              .update(duplicate.id, updatedPerson)
+              .then(returnedPerson => {
+                setPersons(persons.map(p =>
+                  p.id !== duplicate.id ? p : returnedPerson
+                ))
+
+                setMessage(`${duplicate.name} updated successfully`)
+                setType('success')
+                setTimeout(() => setMessage(null), 3000)
+
+                setNewNote('')
+                setNewQuote('')
+                setYearOfBirth('')
+              })
+              .catch(() => {
+                setMessage(`${duplicate.name} was already removed from server`)
+                setType('error')
+          
+                setPersons(persons.filter(p => p.id !== duplicate.id))
+                
+                setTimeout(() => setMessage(null), 3000)
+              })
+          }
+        
+          return
         }
-        return
-      }
     
       const addedNote = {
         name: newNote,
         quote: newQuote,
         yearOfBirth: yearOfBirth
       }
-    
+
       personService.create(addedNote).then(data => {
         setPersons(persons.concat(data))
+        setMessage(`${newNote} added successfully`)
+        setType('success')
+        setTimeout(() => setMessage(null), 3000)
         setNewNote('')
         setNewQuote('')
         setYearOfBirth('')
       })
     }
-
 
     const noteHandler = (e) => setNewNote(e.target.value)
     const quoteHandler = (e) =>  setNewQuote(e.target.value)
@@ -77,9 +98,20 @@ const App = () => {
     const handleDelete = (id) => {
       const person = persons.find(p => p.id === id)
         if (window.confirm(`Delete ${person.name}?`)) {
-          personService.remove(id).then(() => {
-            setPersons(persons.filter(p => p.id !== id))
-        })
+          personService
+            .remove(id)
+            .then(() => {
+              setPersons(persons.filter(p => p.id !== id))
+              setMessage(`${person.name} deleted`)
+              setType('error')
+              setTimeout(() => setMessage(null), 3000)
+            })
+            .catch(() => {
+              setMessage(`${person.name} was already removed from server`)
+              setType('error')
+              setPersons(persons.filter(p => p.id !== id))
+              setTimeout(() => setMessage(null), 3000)
+            })
       }
     }
 
@@ -88,6 +120,8 @@ const App = () => {
 
   return (
     <div className='parent'>
+
+        <Notification message={message} type={type} />
 
       <div className='filter'>
         <Filter value={filter} onChange={handleSearch}/>

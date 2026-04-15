@@ -54,3 +54,19 @@ table {
         }
     }
 }
+
+.success {
+  color: green;
+  background: lightgray;
+  border: 2px solid green;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  background: lightgray;
+  border: 2px solid red;
+  padding: 10px;
+  margin-bottom: 10px;
+}
