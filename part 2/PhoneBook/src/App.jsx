@@ -61,16 +61,19 @@ const App = () => {
                 setNewQuote('')
                 setYearOfBirth('')
               })
-              .catch(() => {
+              .catch((error) => {
+                console.log(error)
                 setMessage(`${duplicate.name} was already removed from server`)
                 setType('error')
           
                 setPersons(persons.filter(p => p.id !== duplicate.id))
                 
-                setTimeout(() => setMessage(null), 3000)
+                setTimeout(() =>{
+                  setMessage(null)
+                  setType(null)
+                }, 3000)
               })
           }
-        
           return
         }
     
