@@ -19,9 +19,14 @@ const App = () => {
       
       {matches.length > 10 && <p>Too many matches, specify another filter</p>}
       
-      {matches.length <= 10 && matches.length > 1 && (
-        matches.map(c => <div key={c.cca3}>{c.name.common}</div>)
-      )}
+        {matches.length <= 10 && matches.length > 1 && (
+          matches.map(c => (
+            <div key={c.cca3}>
+              {c.name.common} 
+              <button onClick={() => setQuery(c.name.common)}>show</button>
+            </div>
+          ))
+        )}
 
       {matches.length === 1 && (
         <div>
@@ -35,6 +40,8 @@ const App = () => {
           <img src={matches[0].flags.png} width="150" />
         </div>
       )}
+
+
     </div>
   )
 }
