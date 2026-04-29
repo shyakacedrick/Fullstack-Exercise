@@ -7,7 +7,7 @@ const morgan = require('morgan')
 app.use(morgan('dev'))
 
 
-let persons = [
+  let persons = [
         { 
           id: 1,
           name: "Arto Hellas", 
@@ -29,10 +29,26 @@ let persons = [
           number: "39-23-6423122"
         }
     ]
+    
+app.get('/info', (req, res) => {
+  const validPeople = persons.length
+  const date = new Date()
+
+  res.send(`
+    <p>Phonebook has info for ${validPeople} people</p>
+    <p>${date}</p>
+    `)
+})
 
 app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
+
+
+
+
+
+
 
 
 const PORT = 3001
