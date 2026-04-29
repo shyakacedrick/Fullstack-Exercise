@@ -51,6 +51,15 @@ app.get('/api/persons/:id', (req, res) => {
     else res.status(404).json({error: "ID not found"})
 })
 
+app.delete('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const person = persons.find(p => p.id === id)
+  if (!person) return res.status(404).json({error: "ID does not exist"})
+  
+    persons = persons.filter(p => p.id !== id)
+
+    res.json(persons)
+})
 
 
 
