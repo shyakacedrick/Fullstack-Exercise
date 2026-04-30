@@ -63,26 +63,28 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 
-app.post('/api/persons',(req, res)=>{
+app.post('/api/persons', (req, res) => {
   const body = req.body
 
-  const geneId = ()=>{
-    const maxId = persons.length > 0 ? Math.max(...persons.map(p => Number(p.id))) : 0
-   return maxId + 1
-  }
+  if (!body.name || !body.number) return res.status(400).json({error: "name or number missing"})
 
   const error = persons.some(p => p.name === body.name)
-  if( error) return res.status(400).json({error: "name must unique"})
+
+  if (error) return res.status(400).json({error: "name must be unique"})
+
+  const id = Math.floor(Math.random() * 1000000)
 
   const newPerson = {
-    id : geneId(),
+    id,
     name: body.name,
     number: body.number
   }
-  
+
   persons = persons.concat(newPerson)
-  res.json(persons)
+  res.status(201).json(newPerson)
 })
+
+
 
 const PORT = 3001
 app.listen(PORT, () => console.log(`server active on port ${PORT}`))
