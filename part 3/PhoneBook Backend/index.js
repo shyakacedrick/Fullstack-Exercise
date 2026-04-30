@@ -65,28 +65,24 @@ app.delete('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons',(req, res)=>{
   const body = req.body
-  const geneId = ()=>{
-    const maxId = persons.length > 0
-   ? Math.max(...persons.map(p => Number(p.id))) 
-   : 0
 
+  const geneId = ()=>{
+    const maxId = persons.length > 0 ? Math.max(...persons.map(p => Number(p.id))) : 0
    return maxId + 1
   }
 
-  const nwP = {
+  const error = persons.some(p => p.name === body.name)
+  if( error) return res.status(400).json({error: "name must unique"})
+
+  const newPerson = {
     id : geneId(),
     name: body.name,
     number: body.number
   }
-
-  persons = persons.concat(nwP)
-
+  
+  persons = persons.concat(newPerson)
   res.json(persons)
 })
-
-
-
-
 
 const PORT = 3001
 app.listen(PORT, () => console.log(`server active on port ${PORT}`))
