@@ -2,8 +2,9 @@ console.log("making exercise........")
 
 const express = require('express')
 const app = express()
-
 const morgan = require('morgan')
+
+app.use(express.json())
 app.use(morgan('dev'))
 
 
@@ -59,6 +60,28 @@ app.delete('/api/persons/:id', (req, res) => {
     persons = persons.filter(p => p.id !== id)
 
     res.json(persons)
+})
+
+
+app.post('/api/persons',(req, res)=>{
+  const body = req.body
+  const geneId = ()=>{
+    const maxId = persons.length > 0
+   ? Math.max(...persons.map(p => Number(p.id))) 
+   : 0
+
+   return maxId + 1
+  }
+
+  const nwP = {
+    id : geneId(),
+    name: body.name,
+    number: body.number
+  }
+
+  persons = persons.concat(nwP)
+
+  res.json(persons)
 })
 
 
