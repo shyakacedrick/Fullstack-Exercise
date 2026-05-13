@@ -51,17 +51,9 @@ const hasDuplicateName = (name, currentId) =>
 const generateId = () => Math.max(...persons.map(person => person.id), 0) + 1
 
 app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
-})
-
-app.get('/info', (req, res) => {
-  const validPeople = persons.length
-  const date = new Date()
-
-  res.send(`
-    <p>Phonebook has info for ${validPeople} people</p>
-    <p>${date}</p>
-    `)
+    res.send(`
+      <h1>Hello there!</h1>
+      <p>Welcome to the phonebook backend.</p>`)
 })
 
 app.get('/api/persons', (req, res) => {
