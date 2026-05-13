@@ -50,10 +50,10 @@ const hasDuplicateName = (name, currentId) =>
 
 const generateId = () => Math.max(...persons.map(person => person.id), 0) + 1
 
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
+app.get('/', (req, res) => {
+    res.send('<h1>Hello World!</h1>')
 })
-    
+
 app.get('/info', (req, res) => {
   const validPeople = persons.length
   const date = new Date()
@@ -64,6 +64,10 @@ app.get('/info', (req, res) => {
     `)
 })
 
+app.get('/api/persons', (req, res) => {
+  res.json(persons)
+})
+    
 
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
