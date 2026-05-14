@@ -1,13 +1,17 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const morgan = require('morgan')
+
+app.use(cors())
+app.use(express.json())
+app.use(express.static('dist'))
 
 morgan.token('body', (req) => {
   if (req.method === 'POST' || req.method === 'PUT') return JSON.stringify(req.body)
   return ''
 })
 
-app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 let persons = [
@@ -47,11 +51,6 @@ const hasDuplicateName = (name, currentId) =>
 
 const generateId = () => Math.max(...persons.map(person => person.id), 0) + 1
 
-app.get('/', (req, res) => {
-    res.send(`
-      <h1>Hello there!</h1>
-      <p>Welcome to the phonebook backend.</p>`)
-})
 
 app.get('/api/persons', (req, res) => {
   res.json(persons)
