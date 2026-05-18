@@ -1,3 +1,7 @@
+require('dotenv').config()
+const mongoose = require('mongoose')
+const Person = require('./models/person')
+
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -14,98 +18,35 @@ morgan.token('body', (req) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-let persons = [
-  {
-    id: 1,
-    name: 'Arto Hellas',
-    number: '040-123456'
-  },
-  {
-    id: 2,
-    name: 'Ada Lovelace',
-    number: '39-44-5323523'
-  },
-  {
-    id: 3,
-    name: 'Dan Abramov',
-    number: '12-43-234345'
-  },
-  {
-    id: 4,
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122'
-  }
-]
 
 const normalizePerson = (body = {}) => ({
   name: typeof body.name === 'string' ? body.name.trim() : '',
   number: body.number === undefined || body.number === null ? '' : String(body.number).trim()
 })
 
-const normalizeName = (name) => name.trim().toLowerCase()
-
-const hasDuplicateName = (name, currentId) =>
-  persons.some(person =>
-    person.id !== currentId && normalizeName(person.name) === normalizeName(name)
-  )
-
-const generateId = () => Math.max(...persons.map(person => person.id), 0) + 1
-
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
-})
-    
-
-app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(p => p.id === id)
-  if (person) res.json(person)
-  else res.status(404).json({ error: 'ID not found' })
+  Person.find({}).then(persons => {
+    res.json(persons)
+  })
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(p => p.id === id)
-  if (!person) return res.status(404).json({ error: 'ID does not exist' })
-  
-  persons = persons.filter(p => p.id !== id)
-
-  res.status(204).end()
-})
-
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const { name, number } = normalizePerson(req.body)
-  if (!name || !number) return res.status(400).json({ error: 'name or number missing' })
 
-  if (hasDuplicateName(name)) return res.status(400).json({ error: 'name must be unique' })
-
-  const newPerson = {
-    id: generateId(),
+  if (!name || !number) return res.status(400).json({error: 'name or number missing'})
+  
+  const person = new Person({
     name,
     number
-  }
+  })
 
-  persons = persons.concat(newPerson)
-  res.status(201).json(newPerson)
+  person.save()
+    .then(savedPerson => {
+      res.status(201).json(savedPerson)
+    })
+    .catch(error => next(error))
 })
-
-app.put('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(p => p.id === id)
-  if (!person) return res.status(404).json({ error: 'ID does not exist' })
-
-  const { name, number } = normalizePerson(req.body)
-  if (!name || !number) return res.status(400).json({ error: 'name or number missing' })
-
-  if (hasDuplicateName(name, id)) return res.status(400).json({ error: 'name must be unique' })
-
-  const updatedPerson = { ...person, name, number }
-  persons = persons.map(p => p.id !== id ? p : updatedPerson)
-
-  res.json(updatedPerson)
-})
-
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => console.log(`server active on port ${PORT}`))
