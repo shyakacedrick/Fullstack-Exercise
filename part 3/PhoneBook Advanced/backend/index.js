@@ -24,6 +24,18 @@ const normalizePerson = (body = {}) => ({
   number: body.number === undefined || body.number === null ? '' : String(body.number).trim()
 })
 
+app.get('/info', async (req, res, next) => {
+  try {
+    const count = await Person.countDocuments({})
+
+    res.send(`
+      <p>Phonebook has info for ${count} people</p>
+      <p>${new Date()}</p>
+    `)
+  } catch (error) {
+    next(error)
+  }
+})
 
 app.get('/api/persons', (req, res) => {
   Person.find({}).then(persons => {
@@ -84,7 +96,6 @@ app.put('/api/persons/:id', (req, res, next) => {
     })
     .catch(error => next(error))
 })
-
 
 
 const errorHandler = (error, req, res, next) => {
