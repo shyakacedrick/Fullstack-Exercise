@@ -48,5 +48,15 @@ app.post('/api/persons', (req, res, next) => {
     .catch(error => next(error))
 })
 
+//==== the delite method that removes the entry from the database ====
+
+app.delete('/api/persons/:id', (req, res, next) => {
+  Person.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.status(204).end()
+    })
+    .catch(error => next(error))
+})
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => console.log(`server active on port ${PORT}`))
