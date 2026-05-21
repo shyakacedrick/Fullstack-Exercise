@@ -1,8 +1,8 @@
 import '/src/index.css'
 
 const PersonList = ({persons, onDelete}) => (
-  
-     <table>
+
+     <table className='phonebook-table'>
         <thead>
           <tr>
             <th>Id</th>
@@ -22,10 +22,12 @@ const PersonList = ({persons, onDelete}) => (
 const SinglePerson = ({person, onDelete}) => (
 
     <tr className='person'>
-      <td>{person.id}</td>
-      <td>{person.name}</td>
-      <td><i>"{person.number}"</i></td>
-      <td><button type='button' onClick={() => onDelete(person.id)}>Delete</button></td>
+      <td className='cell-id'>{person.id.slice(-6)}</td>
+      <td className='cell-name'>{person.name}</td>
+      <td className='cell-number'>{person.number}</td>
+      <td className='cell-actions'>
+        <button type='button' className='btn-delete' onClick={() => onDelete(person.id)}>Delete</button>
+      </td>
     </tr>
 
 )

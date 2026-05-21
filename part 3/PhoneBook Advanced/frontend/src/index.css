@@ -1,72 +1,418 @@
-*{
+
+:root {
+    --bg-grad-1: #eef2ff;
+    --bg-grad-2: #f5f7ff;
+    --bg-grad-3: #e0e7ff;
+
+    --surface: rgba(255, 255, 255, 0.7);
+    --surface-solid: #ffffff;
+    --border: rgba(120, 140, 200, 0.18);
+    --border-strong: rgba(120, 140, 200, 0.35);
+
+    --text: #0f172a;
+    --text-muted: #5b6781;
+    --text-soft: #8b95ad;
+
+    --accent: #4f6bed;
+    --accent-soft: rgba(79, 107, 237, 0.1);
+
+    --success: #16a34a;
+    --error: #dc2626;
+    --error-bg: rgba(220, 38, 38, 0.08);
+
+    --r-sm: 8px;
+    --r-md: 12px;
+    --r-lg: 18px;
+    --r-pill: 999px;
+
+    --shadow-md: 0 4px 20px rgba(40, 60, 130, 0.08);
+    --shadow-lg: 0 20px 50px rgba(40, 60, 130, 0.12);
+
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    background-color: aliceblue;
+html, body {
+    min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 15% 10%, var(--bg-grad-3) 0%, transparent 45%),
+        radial-gradient(circle at 85% 90%, #dbe5ff 0%, transparent 45%),
+        linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
 }
 
-table {
-    border: 1px solid black;
-    width: 100%;
-    height: min(8rem);
-    
-    td, th {
-        border: 1px solid black;
-        text-transform: capitalize;
-        text-align: center;
-        height: min(2rem);
-    }
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
 
-    .person {
-        td:nth-child(3) {
-            width: min(70%);
-            padding: 5px;
-        }
-    }
+input {
+    font-family: inherit;
 }
 
 .parent {
-    /* background-color: rgb(112, 147, 178); */
-    padding: 30px 30px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
     display: grid;
-    gap: 1rem;
+    gap: 32px;
+}
 
-    div {
-        margin: 0px 10px;
-        padding: 5px;
-    }
-    .filter {
-        .val5 { padding: 5px 5px; outline: none;}
-        
-    }
+.parent > div {
+    margin: 0;
+    padding: 0;
+}
 
-    .form{
-        .val1, .val2, .val3 {
-            margin: 10px 15px 15px 0;
-            padding: 5px 5px;
-            outline: none;
-        }
-        #val4 {
-            padding: 3px 15px
-        }
-    }
+#title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#title::before {
+    content: '';
+    width: 6px;
+    height: 32px;
+    background: linear-gradient(180deg, var(--accent), #7c8df0);
+    border-radius: var(--r-pill);
+}
+
+.names h2 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* ============================================
+   Card surfaces
+   ============================================ */
+.filter,
+.form {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 20px 15px !important;
+    box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   Filter / Search
+   ============================================ */
+.filter {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    /* padding: 16px 20px; */
+}
+
+.filter::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    background-color: var(--text-soft);
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>") no-repeat center / contain;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>") no-repeat center / contain;
+}
+
+.val5 {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.95rem;
+    color: var(--text);
+    /* padding: 6px 0; */
+}
+
+.val5::placeholder {
+    color: var(--text-soft);
+}
+
+/* ============================================
+   Form
+   ============================================ */
+.form {
+    padding: 32px;
+}
+
+.form form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.form .val1,
+.form .val2 {
+    width: 100%;
+    margin: 0;
+    padding: 12px 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-md);
+    background: var(--surface-solid);
+    font-size: 0.95rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.form .val1:focus,
+.form .val2:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.form .val1::placeholder,
+.form .val2::placeholder {
+    color: var(--text-soft);
+}
+
+.form br { display: none; }
+
+.form .form-submit {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+}
+
+#val4 {
+    width: 100%;
+    padding: 13px 24px;
+    background: linear-gradient(135deg, var(--accent) 0%, #6b80f0 100%);
+    color: #fff;
+    border: none;
+    border-radius: var(--r-md);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 14px rgba(79, 107, 237, 0.35);
+    transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+#val4:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(79, 107, 237, 0.45);
+}
+
+#val4:active {
+    transform: translateY(0);
+}
+
+/* ============================================
+   Table
+   ============================================ */
+.phonebook-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.phonebook-table thead th {
+    background: transparent;
+    color: var(--text-soft);
+    font-weight: 600;
+    text-align: left;
+    padding: 16px 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    border: none;
+    border-bottom: 1px solid var(--border);
+}
+
+.phonebook-table tbody td {
+    padding: 16px 22px;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.phonebook-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.phonebook-table tbody tr {
+    transition: background 0.15s var(--ease);
+}
+
+.phonebook-table tbody tr:hover {
+    background: var(--accent-soft);
+}
+
+.phonebook-table .cell-id {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    width: 1%;
+    white-space: nowrap;
+}
+
+.phonebook-table .cell-name {
+    font-weight: 600;
+    text-transform: capitalize;
+    color: var(--text);
+}
+
+.phonebook-table .cell-number {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+}
+
+.phonebook-table .cell-actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.phonebook-table .btn-delete {
+    background: transparent;
+    color: var(--error);
+    border: 1px solid transparent;
+    padding: 7px 16px;
+    border-radius: var(--r-pill);
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.18s var(--ease);
+}
+
+.phonebook-table .btn-delete:hover {
+    background: var(--error-bg);
+    border-color: rgba(220, 38, 38, 0.25);
+}
+
+.phonebook-table .btn-delete:active {
+    transform: scale(0.97);
+}
+
+/* ============================================
+   Notifications (toast)
+   ============================================ */
+.success,
+.error {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    padding: 12px 20px 12px 44px;
+    border-radius: var(--r-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    animation: toast-in 0.3s var(--ease);
+    min-width: 280px;
+    max-width: 90vw;
+    background-repeat: no-repeat;
+    background-position: 16px center;
+    background-size: 18px 18px;
 }
 
 .success {
-  color: green;
-  background: lightgray;
-  border: 2px solid green;
-  padding: 10px;
-  margin-bottom: 10px;
+    color: var(--success);
+    background-color: rgba(240, 253, 244, 0.95);
+    border: 1px solid rgba(22, 163, 74, 0.25);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
 }
 
 .error {
-  color: red;
-  background: lightgray;
-  border: 2px solid red;
-  padding: 10px;
-  margin-bottom: 10px;
+    color: var(--error);
+    background-color: rgba(254, 242, 242, 0.95);
+    border: 1px solid rgba(220, 38, 38, 0.25);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/></svg>");
+}
+
+@keyframes toast-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -12px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 640px) {
+    .parent {
+        padding: 28px 16px 60px;
+    }
+
+    #title {
+        font-size: 1.6rem;
+    }
+
+    .form {
+        padding: 24px;
+    }
+
+    .form form {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .filter {
+        padding: 12px 16px;
+    }
+
+    .phonebook-table thead {
+        display: none;
+    }
+
+    .phonebook-table tbody td {
+        padding: 10px 14px;
+    }
+
+    .phonebook-table .cell-id {
+        display: none;
+    }
 }

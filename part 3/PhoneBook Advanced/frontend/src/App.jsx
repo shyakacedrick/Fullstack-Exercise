@@ -151,23 +151,24 @@ const App = () => {
   return (
     <div className='parent'>
 
-        <Notification message={message} type={type} />
+      <Notification message={message} type={type} />
+
+      <h1 id='title'>PhoneBook</h1>
+
+      <div className='form'>
+        <Form
+          onSubmit={AddName}
+          noteValue={newName} yearValue={number}
+          noteHandler={noteHandler} yearHandler={yearHandler}
+        />
+      </div>
 
       <div className='filter'>
         <Filter value={filter} onChange={handleSearch}/>
       </div>
 
-      <div className='form'>
-        <h1 id='title'>PhoneBook</h1>
-        <Form 
-          onSubmit={AddName} 
-          noteValue={newName} yearValue={number} 
-          noteHandler={noteHandler} yearHandler={yearHandler}
-        />
-      </div>
-      
       <div className='names'>
-        <h2>Names</h2>
+        <h2>Contacts</h2>
         <PersonList persons={filteredPersons} onDelete={handleDelete}/>
       </div>
     </div>
