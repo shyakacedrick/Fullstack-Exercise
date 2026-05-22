@@ -6,22 +6,21 @@ if (process.argv.length < 3) {
   process.exit(1)
 }
 
-const password = process.argv[2]
 
 mongoose.set('strictQuery',false)
 
-mongoose.connect(process.env.MONGODB_URI, {family: 4 })
+mongoose.connect(process.env.MONGODB_URI, { family: 4 })
 
 const personSchema = new mongoose.Schema({
 
-    name: String,
-    number: String,
+  name: String,
+  number: String,
 })
 
 const Person = mongoose.model('person', personSchema)
 
 const note = new Person({
-  
+
   name: 'GitHub',
   number: '123-456-7890',
 })

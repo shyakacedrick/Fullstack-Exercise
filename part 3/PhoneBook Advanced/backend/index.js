@@ -1,5 +1,4 @@
 require('dotenv').config()
-const mongoose = require('mongoose')
 const Person = require('./models/person')
 
 const express = require('express')
@@ -55,8 +54,8 @@ app.get('/api/persons/:id', (req, res, next) => {
 app.post('/api/persons', (req, res, next) => {
   const { name, number } = normalizePerson(req.body)
 
-  if (!name || !number) return res.status(400).json({error: 'name or number missing'})
-  
+  if (!name || !number) return res.status(400).json({ error: 'name or number missing' })
+
   const person = new Person({
     name,
     number
@@ -70,11 +69,10 @@ app.post('/api/persons', (req, res, next) => {
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {
-  Person.findByIdAndDelete(req.params.id)
-  .then(() => {
+  Person.findByIdAndDelete(req.params.id).then(() => {
     res.status(204).end()
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
