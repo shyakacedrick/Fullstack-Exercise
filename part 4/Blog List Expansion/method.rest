@@ -1,0 +1,14 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Full Stack Open",
+  "author": "University of Helsinki",
+  "url": "https://fullstackopen.com",
+  "likes": 5
+}
+
+###
+
+DELETE  http://localhost:3003/api/blogs/6a17f7b2c52e89117c7294f0
+Content-Type: application/json
