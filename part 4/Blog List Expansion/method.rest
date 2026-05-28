@@ -10,5 +10,18 @@ Content-Type: application/json
 
 ###
 
-DELETE  http://localhost:3003/api/blogs/6a17f7b2c52e89117c7294f0
+DELETE  http://localhost:3003/api/blogs/6a18075b53f049be7bf4eaf6
 Content-Type: application/json
+
+###
+
+PUT  http://localhost:3003/api/blogs/6a11a31ec03d63840c5d1b25
+Content-Type: application/json
+
+{
+  "title": "Full Stack",
+  "author": "University of Helsinki",
+  "url": "https://fullstackopen.com",
+  "likes": 100,
+  "id": "6a11a31ec03d63840c5d1b25"
+}

@@ -110,24 +110,43 @@ test('blog without url is not added', async () => {
 
 describe('deletion of a blog', () => {
   test('a blog can be deleted', async () => {
+  const blogsAtStart = await Blog.find({})
+
+  const blogToDelete = blogsAtStart[0]
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await Blog.find({})
+
+  assert.strictEqual(
+    blogsAtEnd.length,
+    blogsAtStart.length - 1
+  )
+})
+})
+
+describe('updating a blog', () => {
+  test('likes of a blog can be updated', async () => {
     const blogsAtStart = await Blog.find({})
 
-    const blogToDelete = blogsAtStart[0]
+    const blogToUpdate = blogsAtStart[0]
 
-    await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
-      .expect(204)
+    const updatedData = {
+      title: blogToUpdate.title,
+      author: blogToUpdate.author,
+      url: blogToUpdate.url,
+      likes: 999
+    }
 
-    const blogsAtEnd = await Blog.find({})
+    const response = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedData)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(
-      blogsAtEnd.length,
-      helper.initialBlogs.length - 1
-    )
-
-    const titles = blogsAtEnd.map(blog => blog.title)
-
-    assert(!titles.includes(blogToDelete.title))
+    assert.strictEqual(response.body.likes, 999)
   })
 })
 
