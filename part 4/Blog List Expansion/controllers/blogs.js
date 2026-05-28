@@ -1,31 +1,47 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
-blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
 
-  response.json(blogs)
+blogsRouter.get('/', async (req, res) => {
+  const blogs = await Blog.find({}).populate('user', {
+    username: 1,
+    name: 1
+  })
+  res.json(blogs)
 })
 
-blogsRouter.post('/', async (request, response) => {
-  const body = request.body
+
+
+blogsRouter.post('/', async (req, res) => {
+  const user = await User.findOne({})
+
+  if (!user) {
+    return res.status(400).json({
+      error: 'no users found in database'
+    })
+  }
 
   const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes || 0
+    title: req.body.title,
+    author: req.body.author,
+    url: req.body.url,
+    likes: req.body.likes || 0,
+    user: user._id
   })
 
   const savedBlog = await blog.save()
 
-  response.status(201).json(savedBlog)
+  user.blogs = user.blogs.concat(savedBlog._id)
+  await user.save()
+
+  res.status(201).json(savedBlog)
 })
+
 
 blogsRouter.delete('/:id', async (request, response) => {
   await Blog.findByIdAndDelete(request.params.id)
-
-  response.status(204).json({message: 'Blog deleted'})
+  response.status(204).end()
 })
 
 blogsRouter.put('/:id', async (request, response) => {
@@ -42,7 +58,7 @@ blogsRouter.put('/:id', async (request, response) => {
     request.params.id,
     blog,
     {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
       context: 'query'
     }

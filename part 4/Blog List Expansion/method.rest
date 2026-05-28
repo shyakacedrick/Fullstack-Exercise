@@ -1,3 +1,7 @@
+GET http://localhost:3003/api/blogs
+
+###
+
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
@@ -7,13 +11,20 @@ Content-Type: application/json
   "url": "https://fullstackopen.com",
   "likes": 5
 }
+
 ###
 
 POST http://localhost:3003/api/users
 Content-Type: application/json
 
+# {
+#   "username": "cedry",
+#   "name": "Cedro",
+#   "password": "12345678",
+#   "likes": 5
+# },
 {
-  "username": "ceddy",
+  "username": "cedry",
   "name": "Cedro",
   "password": "12345678",
   "likes": 5

@@ -7,13 +7,37 @@ const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const helper = require('./test_helper')
+const bcrypt = require('bcryptjs')
 
 const api = supertest(app)
 
+
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
 
-  await Blog.insertMany(helper.initialBlogs)
+  const passwordHash = await bcrypt.hash('sekret', 10)
+
+  const user = new User({
+    username: 'testuser',
+    name: 'Test User',
+    passwordHash
+  })
+
+  const savedUser = await user.save()
+
+  for (const blog of helper.initialBlogs) {
+    const blogObject = new Blog({
+      ...blog,
+      user: savedUser._id
+    })
+
+    const savedBlog = await blogObject.save()
+
+    savedUser.blogs = savedUser.blogs.concat(savedBlog._id)
+  }
+
+  await savedUser.save()
 })
 
 describe('when there are initially some blogs', () => {
