@@ -41,6 +41,32 @@ test('blog posts have id property', async () => {
   assert(blog.id)
 })
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'Async/Await Guide',
+    author: 'Cedric',
+    url: 'https://example.com',
+    likes: 15
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  assert.strictEqual(
+    response.body.length,
+    helper.initialBlogs.length + 1
+  )
+
+  const titles = response.body.map(blog => blog.title)
+
+  assert(titles.includes('Async/Await Guide'))
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
