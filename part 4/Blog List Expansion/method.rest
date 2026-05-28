@@ -1,4 +1,4 @@
-GET http://localhost:3003/api/blogs
+GET http://localhost:3003/api/users
 
 ###
 
@@ -9,6 +9,17 @@ Content-Type: application/json
   "title": "Full Stack Open",
   "author": "University of Helsinki",
   "url": "https://fullstackopen.com",
+  "likes": 5
+}
+
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "cedry",
+  "name": "Cedro",
+  "password": "6a184037a5af5e726bbdb368",
   "likes": 5
 }
 
