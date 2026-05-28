@@ -33,6 +33,14 @@ describe('when there are initially some blogs', () => {
   })
 })
 
+test('blog posts have id property', async () => {
+  const response = await api.get('/api/blogs')
+
+  const blog = response.body[0]
+
+  assert(blog.id)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
