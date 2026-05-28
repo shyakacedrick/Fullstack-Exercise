@@ -15,14 +15,15 @@ usersRouter.get('/', async (req, res) => {
 usersRouter.post('/', async (req, res) => {
   const { username, name, password } = req.body
 
+  if (!username || username.length < 3) return res.status(400).json({ error: 'username too short' })
+  if (!password || password.length < 3) return res.status(400).json({ error: 'password too short' })
+
+  const existingUser = await User.findOne({ username })
+
+  if (existingUser) return res.status(400).json({ error: 'username must be unique' })
+
   const passwordHash = await bcrypt.hash(password, 10)
-
-  const user = new User({
-    username,
-    name,
-    passwordHash
-  })
-
+  const user = new User({ username, name, passwordHash })
   const savedUser = await user.save()
 
   res.status(201).json(savedUser)

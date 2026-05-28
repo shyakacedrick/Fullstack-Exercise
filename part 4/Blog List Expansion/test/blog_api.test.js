@@ -5,6 +5,7 @@ const supertest = require('supertest')
 
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const helper = require('./test_helper')
 
 const api = supertest(app)
@@ -148,6 +149,18 @@ describe('updating a blog', () => {
 
     assert.strictEqual(response.body.likes, 999)
   })
+})
+
+test('invalid user is rejected', async () => {
+  const newUser = {
+    username: 'ab',
+    password: '12'
+  }
+
+  await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
 })
 
 after(async () => {

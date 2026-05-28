@@ -7,6 +7,17 @@ Content-Type: application/json
   "url": "https://fullstackopen.com",
   "likes": 5
 }
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "ceddy",
+  "name": "Cedro",
+  "password": "12345678",
+  "likes": 5
+}
 
 ###
 
