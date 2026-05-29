@@ -83,9 +83,11 @@ test('a valid blog can be added', async () => {
     likes: 15
   }
 
+  const token = authHeader
+
   await api
     .post('/api/blogs')
-    .set('Authorization', authHeader)
+    .set('Authorization', token)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -102,14 +104,13 @@ test('a valid blog can be added', async () => {
   assert(titles.includes('Async/Await Guide'))
 })
 
-test('a blog is not added without a token', async () => {
+test('creating blog fails without token', async () => {
   const blogsAtStart = await Blog.find({})
 
   const newBlog = {
-    title: 'Tokenless Blog',
-    author: 'Anonymous',
-    url: 'https://example.com',
-    likes: 1
+    title: 'No token blog',
+    author: 'Test',
+    url: 'http://example.com'
   }
 
   await api
@@ -129,9 +130,11 @@ test('if likes property missing, it defaults to 0', async () => {
     url: 'https://example.com'
   }
 
+  const token = authHeader
+
   const response = await api
     .post('/api/blogs')
-    .set('Authorization', authHeader)
+    .set('Authorization', token)
     .send(newBlog)
     .expect(201)
 
@@ -145,9 +148,11 @@ test('blog without title is not added', async () => {
     likes: 5
   }
 
+  const token = authHeader
+
   await api
     .post('/api/blogs')
-    .set('Authorization', authHeader)
+    .set('Authorization', token)
     .send(newBlog)
     .expect(400)
 })
@@ -159,9 +164,11 @@ test('blog without url is not added', async () => {
     likes: 5
   }
 
+  const token = authHeader
+
   await api
     .post('/api/blogs')
-    .set('Authorization', authHeader)
+    .set('Authorization', token)
     .send(newBlog)
     .expect(400)
 })
