@@ -102,6 +102,26 @@ test('a valid blog can be added', async () => {
   assert(titles.includes('Async/Await Guide'))
 })
 
+test('a blog is not added without a token', async () => {
+  const blogsAtStart = await Blog.find({})
+
+  const newBlog = {
+    title: 'Tokenless Blog',
+    author: 'Anonymous',
+    url: 'https://example.com',
+    likes: 1
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(401)
+
+  const blogsAtEnd = await Blog.find({})
+
+  assert.strictEqual(blogsAtEnd.length, blogsAtStart.length)
+})
+
 test('if likes property missing, it defaults to 0', async () => {
   const newBlog = {
     title: 'No Likes Blog',
@@ -188,6 +208,20 @@ describe('deletion of a blog', () => {
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
       .set('Authorization', `Bearer ${loginResponse.body.token}`)
+      .expect(401)
+
+    const blogsAtEnd = await Blog.find({})
+
+    assert.strictEqual(blogsAtEnd.length, blogsAtStart.length)
+  })
+
+  test('a blog cannot be deleted without a token', async () => {
+    const blogsAtStart = await Blog.find({})
+
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
       .expect(401)
 
     const blogsAtEnd = await Blog.find({})
