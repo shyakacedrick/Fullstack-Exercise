@@ -12,31 +12,38 @@ blogsRouter.get('/', async (req, res) => {
   res.json(blogs)
 })
 
+blogsRouter.post('/', async (req, res, next) => {
+  try {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET)
 
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: 'token invalid' })
+    }
 
-blogsRouter.post('/', async (req, res) => {
-  const decoded = jwt.verify(req.token, process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
 
-  const user = await User.findById(decoded.id)
+    if (!user) {
+      return res.status(401).json({ error: 'token invalid' })
+    }
 
-  const blog = new Blog({
-    ...req.body,
-    user: user._id
-  })
+    const blog = new Blog({
+      title: req.body.title,
+      author: req.body.author,
+      url: req.body.url,
+      likes: req.body.likes,
+      user: user._id
+    })
 
-  const saved = await blog.save()
+    const savedBlog = await blog.save()
 
-  user.blogs = user.blogs.concat(saved._id)
-  await user.save()
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
 
-  res.status(201).json(saved)
+    res.status(201).json(savedBlog)
+  } catch (error) {
+    next(error)
+  }
 })
-
-
-
-
-
-
 
 
 blogsRouter.delete('/:id', async (request, response) => {

@@ -3,6 +3,8 @@ const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 
+process.env.SECRET = process.env.SECRET || 'testsecret'
+
 const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -11,6 +13,7 @@ const bcrypt = require('bcryptjs')
 
 const api = supertest(app)
 
+let authHeader
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -38,6 +41,12 @@ beforeEach(async () => {
   }
 
   await savedUser.save()
+
+  const loginResponse = await api
+    .post('/api/login')
+    .send({ username: 'testuser', password: 'sekret' })
+
+  authHeader = `Bearer ${loginResponse.body.token}`
 })
 
 describe('when there are initially some blogs', () => {
@@ -76,6 +85,7 @@ test('a valid blog can be added', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', authHeader)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -101,6 +111,7 @@ test('if likes property missing, it defaults to 0', async () => {
 
   const response = await api
     .post('/api/blogs')
+    .set('Authorization', authHeader)
     .send(newBlog)
     .expect(201)
 
@@ -116,6 +127,7 @@ test('blog without title is not added', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', authHeader)
     .send(newBlog)
     .expect(400)
 })
@@ -129,6 +141,7 @@ test('blog without url is not added', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', authHeader)
     .send(newBlog)
     .expect(400)
 })
