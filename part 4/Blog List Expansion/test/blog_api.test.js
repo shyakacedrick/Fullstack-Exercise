@@ -148,21 +148,52 @@ test('blog without url is not added', async () => {
 
 describe('deletion of a blog', () => {
   test('a blog can be deleted', async () => {
-  const blogsAtStart = await Blog.find({})
+    const blogsAtStart = await Blog.find({})
 
-  const blogToDelete = blogsAtStart[0]
+    const blogToDelete = blogsAtStart[0]
 
-  await api
-    .delete(`/api/blogs/${blogToDelete.id}`)
-    .expect(204)
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', authHeader)
+      .expect(204)
 
-  const blogsAtEnd = await Blog.find({})
+    const blogsAtEnd = await Blog.find({})
+    const userAtEnd = await User.findOne({ username: 'testuser' })
 
-  assert.strictEqual(
-    blogsAtEnd.length,
-    blogsAtStart.length - 1
-  )
-})
+    assert.strictEqual(
+      blogsAtEnd.length,
+      blogsAtStart.length - 1
+    )
+
+    assert(!userAtEnd.blogs.map(blog => blog.toString()).includes(blogToDelete.id))
+  })
+
+  test('a blog cannot be deleted by another user', async () => {
+    const blogsAtStart = await Blog.find({})
+
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .post('/api/users')
+      .send({
+        username: 'anotheruser',
+        name: 'Another User',
+        password: 'secret123'
+      })
+
+    const loginResponse = await api
+      .post('/api/login')
+      .send({ username: 'anotheruser', password: 'secret123' })
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `Bearer ${loginResponse.body.token}`)
+      .expect(401)
+
+    const blogsAtEnd = await Blog.find({})
+
+    assert.strictEqual(blogsAtEnd.length, blogsAtStart.length)
+  })
 })
 
 describe('updating a blog', () => {

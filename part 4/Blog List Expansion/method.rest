@@ -46,6 +46,7 @@ Content-Type: application/json
 
 DELETE  http://localhost:3003/api/blogs/6a18075b53f049be7bf4eaf6
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imlubm9jZW50IiwiaWQiOiI2YTE5MzY5MGQ3NjU0OWJkYjlkMTg1ZjciLCJpYXQiOjE3ODAwMzcyODh9.rLKN_s8XCsWa_Sj6x5cLFsrA0s4lhCTljwp0ZAHHP04
 
 ###
 
