@@ -4,6 +4,7 @@ import './App.css'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 
@@ -22,6 +23,11 @@ const App = () => {
     })
   }, [])
 
+
+
+
+
+
   useEffect(() => {
   const loggedUserJSON = window.localStorage.getItem(
     'loggedBlogAppUser'
@@ -30,14 +36,23 @@ const App = () => {
   if (loggedUserJSON) {
     const user = JSON.parse(loggedUserJSON)
     setUser(user)
-  }
-}, [])
+      blogService.setToken(user.token)
+    }
+  }, [])
+
+
+
+
+
+
 
   const handleLogin = async (event) => {
     event.preventDefault()
 
     try {
       const user = await loginService.login({ username, password })
+      
+      blogService.setToken(user.token)
 
       // Save to browser
       window.localStorage.setItem(
@@ -76,20 +91,36 @@ const App = () => {
     setUser(null)
   }
 
-  return (
-    <main className="blog-list">
-      <h2>Blogs</h2>
+  const createBlog = async (blogObject) => {
+  try {
+    const returnedBlog =
+      await blogService.create(blogObject)
 
+    setBlogs(
+      blogs.concat(returnedBlog)
+    )
+  } catch {
+    alert('Error creating blog')
+  }
+}
+
+  return (
+    <div>
+      <h2>blogs</h2>
       <p>
         {user.name} logged in
         <button onClick={handleLogout}>
           Logout
         </button>
       </p>
+    
+      <BlogForm createBlog={createBlog} />
+    
       {blogs.map(blog => (
         <Blog key={blog.id} blog={blog} />
       ))}
-    </main>
+  
+    </div>
   )
 }
 
