@@ -8,11 +8,14 @@ import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 
+import Notification from "./components/Notification"
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [notification, setNotification] = useState(null)
 
 
   useEffect(() => {
@@ -22,11 +25,6 @@ const App = () => {
       setBlogs(returnedBlogs)
     })
   }, [])
-
-
-
-
-
 
   useEffect(() => {
   const loggedUserJSON = window.localStorage.getItem(
@@ -39,12 +37,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
-
-
-
-
-
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -61,10 +53,18 @@ const App = () => {
       )
 
       setUser(user)
+      const displayName = user?.name || user?.username || user?.email || 'user'
+      setNotification({ message: `Welcome ${displayName}!`, type: 'success' })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
       setUsername('')
       setPassword('')
     } catch {
-      alert('Wrong username or password')
+      setNotification({ message: 'Wrong username or password', type: 'error' })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     }
   }
 
@@ -72,7 +72,12 @@ const App = () => {
     return (
       <div className="app-shell">
         <section className="centered-card">
-          <h2>Log in</h2>
+          <div style={{ marginBottom: '1rem' }}>
+            <span className="brand">BlogList</span>
+            <span className="brand-sub">Personal blogs · simple CMS</span>
+          </div>
+          <Notification message={notification} />
+          <h2 style={{ marginTop: '0.5rem' }}>Log in</h2>
 
           <LoginForm
             username={username}
@@ -89,6 +94,11 @@ const App = () => {
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
+
+    setNotification({ message: 'Logged out successfully', type: 'success' })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
   }
 
   const createBlog = async (blogObject) => {
@@ -96,30 +106,47 @@ const App = () => {
     const returnedBlog =
       await blogService.create(blogObject)
 
-    setBlogs(
-      blogs.concat(returnedBlog)
-    )
+    setBlogs( blogs.concat(returnedBlog) )
+    setNotification({ message: `Blog "${returnedBlog.title}" added successfully`, type: 'success' })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+
   } catch {
-    alert('Error creating blog')
-  }
+      setNotification({ message: 'Failed to create blog', type: 'error' })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
 }
 
   return (
-    <div>
-      <h2>blogs</h2>
-      <p>
-        {user.name} logged in
-        <button onClick={handleLogout}>
-          Logout
-        </button>
-      </p>
-    
-      <BlogForm createBlog={createBlog} />
-    
-      {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
-  
+    <div className="container">
+      <div className="topbar">
+        <div>
+          <span className="brand">BlogList</span>
+          <span className="brand-sub">Personal blogs · simple CMS</span>
+        </div>
+
+        <div className="actions">
+          <span style={{ color: 'var(--text-secondary)', fontWeight:600 }}>{user.name || user.username || 'user'}</span>
+          <button className="btn btn-secondary" onClick={handleLogout}>Logout</button>
+        </div>
+      </div>
+
+      <Notification message={notification} />
+
+      <h1 className="page-title">Blogs</h1>
+
+      <div className="card">
+        <BlogForm createBlog={createBlog} />
+      </div>
+
+      <div className="blog-grid">
+        {blogs.map(blog => (
+          <Blog key={blog.id} blog={blog} />
+        ))}
+      </div>
     </div>
   )
 }
