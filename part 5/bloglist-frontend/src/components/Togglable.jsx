@@ -1,44 +1,59 @@
-import { useState } from "react"
+import {
+  useState,
+  useImperativeHandle,
+  forwardRef,
+} from "react"
 
-const Togglable = ({ buttonLabel, children }) => {
-  const [visible, setVisible] = useState(false)
+const Togglable = forwardRef(
+  ({ buttonLabel, children }, refs) => {
 
-  const hideWhenVisible = {
-    display: visible ? "none" : ""
-  }
+    const [visible, setVisible] = useState(false)
 
-  const showWhenVisible = {
-    display: visible ? "" : "none"
-  }
+    const hideWhenVisible = {
+      display: visible ? "none" : ""
+    }
 
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
+    const showWhenVisible = {
+      display: visible ? "" : "none"
+    }
 
-  return (
-    <div className="togglable">
-      <div style={hideWhenVisible}>
-        <button
-          className="btn btn-primary"
-          onClick={toggleVisibility}
-        >
-          {buttonLabel}
-        </button>
+    const toggleVisibility = () => {
+      setVisible(!visible)
+    }
+
+    useImperativeHandle(refs, () => {
+      return {
+        toggleVisibility,
+      }
+    })
+
+    return (
+      <div>
+
+        <div style={hideWhenVisible}>
+          <button
+            className="btn btn-primary"
+            onClick={toggleVisibility}
+          >
+            {buttonLabel}
+          </button>
+        </div>
+
+        <div style={showWhenVisible}>
+          {children}
+
+          <button
+            className="btn btn-secondary"
+            onClick={toggleVisibility}
+          >
+            Cancel
+          </button>
+        </div>
+
       </div>
+    )
 
-      <div style={showWhenVisible}>
-        {children}
-
-        <button
-          className="btn btn-secondary"
-          onClick={toggleVisibility}
-          style={{ marginTop: "1rem" }}
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-  )
-}
+  }
+)
 
 export default Togglable

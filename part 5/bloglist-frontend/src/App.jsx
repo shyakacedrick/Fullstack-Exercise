@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from "react"
 
 import './App.css'
 import blogService from './services/blogs'
@@ -16,6 +16,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
+  const blogFormRef = useRef()
 
 
   useEffect(() => {
@@ -103,9 +104,13 @@ const App = () => {
 
   const createBlog = async (blogObject) => {
   try {
-    const returnedBlog =
-      await blogService.create(blogObject)
+        const returnedBlog =
+          await blogService.create(blogObject)
 
+        blogFormRef.current.toggleVisibility()
+        setBlogs(
+          blogs.concat(returnedBlog)
+        )
     setBlogs( blogs.concat(returnedBlog) )
     setNotification({ message: `Blog "${returnedBlog.title}" added successfully`, type: 'success' })
     setTimeout(() => {
@@ -204,12 +209,12 @@ const handleDelete = async (blogToDelete) => {
 
       <h1 className="page-title">Blogs</h1>
 
-      <Togglable buttonLabel="New Blog">
+      <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <div className="card">
           <BlogForm createBlog={createBlog} />
         </div>
       </Togglable>
-      
+
       <div className="blog-grid">
         {blogs.map(blog => (
           <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} currentUser={user}/>
