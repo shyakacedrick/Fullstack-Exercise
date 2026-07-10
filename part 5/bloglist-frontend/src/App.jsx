@@ -120,6 +120,38 @@ const App = () => {
     }
 }
 
+const handleLike = async (blogToUpdate) => {
+  try {
+    const updatedBlog = {
+      ...blogToUpdate,
+      likes: blogToUpdate.likes + 1,
+      user: blogToUpdate.user.id || blogToUpdate.user,
+    }
+
+    const returnedBlog = await blogService.update(
+      blogToUpdate.id,
+      updatedBlog
+    )
+
+setBlogs(currentBlogs =>
+  currentBlogs.map(blog =>
+    blog.id === returnedBlog.id
+      ? returnedBlog
+      : blog
+  )
+)
+  } catch {
+    setNotification({
+      message: "Failed to like the blog",
+      type: "error",
+    })
+
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
+}
+
   return (
     <div className="container">
       <div className="topbar">
@@ -144,7 +176,7 @@ const App = () => {
 
       <div className="blog-grid">
         {blogs.map(blog => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} handleLike={handleLike}/>
         ))}
       </div>
     </div>

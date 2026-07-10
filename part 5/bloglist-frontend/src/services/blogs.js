@@ -25,12 +25,20 @@ const create = async (newBlog) => {
     newBlog,
     config
   )
+  return response.data
+}
 
+const update = async (id, updatedBlog) => {
+  const response = await axios.put(
+    `${baseUrl}/${id}`,
+    updatedBlog
+  )
   return response.data
 }
 
 export default {
   getAll,
   create,
+  update,
   setToken,
 }
