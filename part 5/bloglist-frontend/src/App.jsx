@@ -152,6 +152,40 @@ setBlogs(currentBlogs =>
   }
 }
 
+const handleDelete = async (blogToDelete) => {
+  const confirmDelete = window.confirm(
+    `Remove blog "${blogToDelete.title}" by ${blogToDelete.author}?`
+  )
+
+  if (!confirmDelete) {
+    return
+  }
+
+  try {
+    await blogService.remove(blogToDelete.id)
+    setBlogs(currentBlogs =>
+      currentBlogs.filter(
+        blog => blog.id !== blogToDelete.id
+      )
+    )
+    setNotification({
+      message: "Blog deleted successfully",
+      type: "success",
+    })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  } catch {
+    setNotification({
+      message: "Failed to delete blog",
+      type: "error",
+    })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
+}
+
   return (
     <div className="container">
       <div className="topbar">
@@ -176,7 +210,7 @@ setBlogs(currentBlogs =>
 
       <div className="blog-grid">
         {blogs.map(blog => (
-          <Blog key={blog.id} blog={blog} handleLike={handleLike}/>
+          <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} currentUser={user}/>
         ))}
       </div>
     </div>

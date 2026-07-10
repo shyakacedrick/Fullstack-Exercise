@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
   const [visible, setVisible] = useState(false)
   const hideWhenVisible = { display: visible ? "none" : ""}
   const showWhenVisible = { display: visible ? "" : "none"}
@@ -8,6 +8,13 @@ const Blog = ({ blog, handleLike }) => {
   
   const toggleVisibility = () => { setVisible(!visible) }
 
+  const blogOwner =
+    typeof blog.user === "object"
+      ? blog.user.username
+      : null
+  const canDelete =
+    currentUser &&
+    blogOwner === currentUser.username
 
   return (
   <article className="card blog-card" aria-label={`Blog ${blog.title}`}>
@@ -47,6 +54,12 @@ const Blog = ({ blog, handleLike }) => {
             👍 Like
           </button>
       </p>
+
+      {canDelete && (
+        <button className="btn btn-danger" onClick={() => handleDelete(blog)}>
+          Remove
+        </button>
+      )}
 
       <p>
         <strong>Added by:</strong> {blog.user?.name || "Unknown"}

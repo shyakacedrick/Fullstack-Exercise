@@ -117,6 +117,15 @@ h1.page-title {
 .btn-secondary { background:transparent; border:1px solid var(--border); color:var(--text-primary); }
 .btn-ghost { background:transparent; color:var(--text-primary); }
 
+.btn-danger {
+  background: #dc2626;
+  color: white;
+  border: none;
+}
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
 /* Cards */
 .card { background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow: var(--shadow-1); padding:1rem; transition: transform .14s ease, box-shadow .14s ease; }
 .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-2); }
