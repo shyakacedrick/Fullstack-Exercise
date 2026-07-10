@@ -7,8 +7,8 @@ import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
-
 import Notification from "./components/Notification"
+import Togglable from "./components/Togglable"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -204,10 +204,12 @@ const handleDelete = async (blogToDelete) => {
 
       <h1 className="page-title">Blogs</h1>
 
-      <div className="card">
-        <BlogForm createBlog={createBlog} />
-      </div>
-
+      <Togglable buttonLabel="New Blog">
+        <div className="card">
+          <BlogForm createBlog={createBlog} />
+        </div>
+      </Togglable>
+      
       <div className="blog-grid">
         {blogs.map(blog => (
           <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} currentUser={user}/>
