@@ -108,14 +108,16 @@ const App = () => {
           await blogService.create(blogObject)
 
         blogFormRef.current.toggleVisibility()
-        setBlogs(
-          blogs.concat(returnedBlog)
-        )
-    setBlogs( blogs.concat(returnedBlog) )
-    setNotification({ message: `Blog "${returnedBlog.title}" added successfully`, type: 'success' })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
+        setBlogs(currentBlogs => currentBlogs.concat(returnedBlog))
+
+          const showNotification = (message, type = "success") => {
+            setNotification({ message, type })
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+          }
+        
+          showNotification( `Blog "${returnedBlog.title}" added successfully`)
 
   } catch {
       setNotification({ message: 'Failed to create blog', type: 'error' })
@@ -138,13 +140,13 @@ const handleLike = async (blogToUpdate) => {
       updatedBlog
     )
 
-setBlogs(currentBlogs =>
-  currentBlogs.map(blog =>
-    blog.id === returnedBlog.id
-      ? returnedBlog
-      : blog
-  )
-)
+      setBlogs(currentBlogs =>
+        currentBlogs.map(blog =>
+          blog.id === returnedBlog.id
+            ? returnedBlog
+            : blog
+        )
+      )
   } catch {
     setNotification({
       message: "Failed to like the blog",
@@ -216,7 +218,9 @@ const handleDelete = async (blogToDelete) => {
       </Togglable>
 
       <div className="blog-grid">
-        {blogs.map(blog => (
+        {[...blogs]
+        .sort((a, b) => b.likes - a.likes)
+        .map(blog => (
           <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} currentUser={user}/>
         ))}
       </div>
