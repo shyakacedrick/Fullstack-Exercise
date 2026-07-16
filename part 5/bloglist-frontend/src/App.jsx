@@ -140,13 +140,13 @@ const handleLike = async (blogToUpdate) => {
       updatedBlog
     )
 
-setBlogs(currentBlogs =>
-  currentBlogs.map(blog =>
-    blog.id === returnedBlog.id
-      ? returnedBlog
-      : blog
-  )
-)
+      setBlogs(currentBlogs =>
+        currentBlogs.map(blog =>
+          blog.id === returnedBlog.id
+            ? returnedBlog
+            : blog
+        )
+      )
   } catch {
     setNotification({
       message: "Failed to like the blog",
@@ -218,7 +218,9 @@ const handleDelete = async (blogToDelete) => {
       </Togglable>
 
       <div className="blog-grid">
-        {blogs.map(blog => (
+        {[...blogs]
+        .sort((a, b) => b.likes - a.likes)
+        .map(blog => (
           <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} currentUser={user}/>
         ))}
       </div>
