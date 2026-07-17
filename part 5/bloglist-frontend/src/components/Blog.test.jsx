@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import Blog from "./Blog"
 
 describe("Blog component", () => {
@@ -40,4 +41,36 @@ describe("Blog component", () => {
 
   })
 
+  test("shows url and likes after clicking the view button", async () => {
+  const blog = {
+    title: "React Patterns",
+    author: "Michael Chan",
+    url: "https://reactpatterns.com",
+    likes: 12,
+    user: {
+      name: "John",
+    },
+  }
+
+  render(
+    <Blog
+      blog={blog}
+      handleLike={() => {}}
+    />
+  )
+
+  const user = userEvent.setup()
+
+  const button = screen.getByText("View")
+
+  await user.click(button)
+
+  expect(
+    screen.getByText("https://reactpatterns.com")
+  ).toBeVisible()
+
+  expect(
+    screen.getByText(/Likes:/i)
+  ).toBeVisible()
+})
 })
