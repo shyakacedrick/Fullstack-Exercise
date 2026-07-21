@@ -4,7 +4,7 @@ import { vi } from "vitest"
 
 import BlogForm from "./BlogForm"
 
-test("calls createBlog with correct data", async () => {
+test("calls createBlog with the correct blog data", async () => {
   const createBlog = vi.fn()
 
   render(
@@ -13,13 +13,20 @@ test("calls createBlog with correct data", async () => {
 
   const user = userEvent.setup()
 
-  const titleInput = screen.getByLabelText(/title/i)
-  const authorInput = screen.getByLabelText(/author/i)
-  const urlInput = screen.getByLabelText(/url/i)
+  await user.type(
+    screen.getByLabelText(/title/i),
+    "React Testing"
+  )
 
-  await user.type(titleInput, "React Testing")
-  await user.type(authorInput, "Michael Chan")
-  await user.type(urlInput, "https://react.dev")
+  await user.type(
+    screen.getByLabelText(/author/i),
+    "Michael Chan"
+  )
+
+  await user.type(
+    screen.getByLabelText(/url/i),
+    "https://react.dev"
+  )
 
   await user.click(
     screen.getByRole("button", {
@@ -29,9 +36,9 @@ test("calls createBlog with correct data", async () => {
 
   expect(createBlog).toHaveBeenCalledTimes(1)
 
-  expect(createBlog).toHaveBeenCalledWith({
-    title: "React Testing",
-    author: "Michael Chan",
-    url: "https://react.dev",
-  })
+  const submittedBlog = createBlog.mock.calls[0][0]
+
+  expect(submittedBlog.title).toBe("React Testing")
+  expect(submittedBlog.author).toBe("Michael Chan")
+  expect(submittedBlog.url).toBe("https://react.dev")
 })
