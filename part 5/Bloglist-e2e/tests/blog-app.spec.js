@@ -1,4 +1,6 @@
 const axios = require('axios')
+const helper = require('./helper')
+
 const { test, expect, describe, beforeEach } = require('@playwright/test')
 
 describe('Blog app', () => {
