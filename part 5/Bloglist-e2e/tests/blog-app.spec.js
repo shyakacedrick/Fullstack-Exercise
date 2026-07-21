@@ -137,7 +137,7 @@ describe('Blog app', () => {
         page.getByRole('button', { name: 'Delete' })
       ).toHaveCount(0)
     })
-    
+
     test('blogs are ordered according to likes', async ({ page }) => {
 
       const blogs = await page.locator('.blog-card').allTextContents()
@@ -147,6 +147,11 @@ describe('Blog app', () => {
       expect(blogs[1]).toContain('Second Blog')
 
       expect(blogs[2]).toContain('First Blog')
+    })
+    test('only creator can delete a blog', async ({ page }) => {
+      await expect(
+        page.getByRole('button', { name: 'Remove' })
+      ).toHaveCount(0)
     })
   })
 })
