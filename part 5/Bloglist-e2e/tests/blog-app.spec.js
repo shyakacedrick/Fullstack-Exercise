@@ -137,5 +137,16 @@ describe('Blog app', () => {
         page.getByRole('button', { name: 'Delete' })
       ).toHaveCount(0)
     })
+    
+    test('blogs are ordered according to likes', async ({ page }) => {
+
+      const blogs = await page.locator('.blog-card').allTextContents()
+
+      expect(blogs[0]).toContain('Third Blog')
+
+      expect(blogs[1]).toContain('Second Blog')
+
+      expect(blogs[2]).toContain('First Blog')
+    })
   })
 })
