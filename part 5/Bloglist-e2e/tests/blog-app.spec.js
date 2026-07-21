@@ -5,11 +5,17 @@ describe('Blog app', () => {
   beforeEach(async ({ page }) => {
     await axios.post('http://localhost:3003/api/testing/reset')
 
-    const user = {
+   await axios.post('http://localhost:3003/api/users', {
       name: 'Test User',
       username: 'testuser',
       password: 'secret123',
-    }
+    })
+
+    await axios.post('http://localhost:3003/api/users', {
+      name: 'Another User',
+      username: 'anotheruser',
+      password: 'secret123',
+    })
 
     await axios.post('http://localhost:3003/api/users', user)
 
@@ -97,6 +103,39 @@ describe('Blog app', () => {
       await expect(
         page.getByText('Likes: 1')
       ).toBeVisible()
+    })
+
+    test('only the creator can delete a blog', async ({ page }) => {
+
+      await page.getByLabel('Username').fill('testuser')
+
+      await page.getByLabel('Password').fill('secret123')
+
+      await page.getByRole('button', { name: 'Login' }).click()
+
+      await page.getByRole('button', { name: 'New Blog' }).click()
+
+      await page.getByLabel('Title').fill('Delete Test')
+
+      await page.getByLabel('Author').fill('FSO')
+
+      await page.getByLabel('URL').fill('https://fullstackopen.com')
+
+      await page.getByRole('button', { name: 'Create' }).click()
+
+      await page.getByRole('button', { name: 'Logout' }).click()
+
+      await page.getByLabel('Username').fill('anotheruser')
+
+      await page.getByLabel('Password').fill('secret123')
+
+      await page.getByRole('button', { name: 'Login' }).click()
+
+      await page.getByRole('button', { name: 'View' }).click()
+
+      await expect(
+        page.getByRole('button', { name: 'Delete' })
+      ).toHaveCount(0)
     })
   })
 })
