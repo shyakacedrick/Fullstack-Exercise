@@ -1,8 +1,8 @@
-import { defineConfig, devices } from '@playwright/test';
+const { defineConfig, devices } = require('@playwright/test');
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-export default defineConfig({
+module.exports = defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -13,6 +13,11 @@ export default defineConfig({
     trace: 'on-first-retry',
     baseURL: 'http://localhost:5173',
     headless: true,
+  },
+  webServer: {
+    command: 'node start-app.js',
+    port: 5173,
+    reuseExistingServer: !process.env.CI,
   },
 
   projects: [
@@ -30,6 +35,6 @@ export default defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
-  ]
+  ],
 });
 

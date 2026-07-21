@@ -1,10 +1,25 @@
+const axios = require('axios')
 const { test, expect, beforeEach, describe } = require('@playwright/test')
 
 describe('Blog app', () => {
 
-  beforeEach(async ({ page }) => {
-    await page.goto('/')
-  })
+    beforeEach(async ({ page }) => {
+    
+      await axios.post('http://localhost:3003/api/testing/reset')
+    
+      const user = {
+        name: 'Test User',
+        username: 'testuser',
+        password: 'secret123'
+      }
+    
+      await axios.post(
+        'http://localhost:3003/api/users',
+        user
+      )
+    
+      await page.goto('/')
+    })
 
   test('Login form is shown', async ({ page }) => {
 
@@ -28,9 +43,9 @@ describe('Blog app', () => {
 
   test('user can log in', async ({ page }) => {
 
-    await page.getByLabel('Username').fill('innocent')
+    await page.getByLabel('Username').fill('testuser')
 
-    await page.getByLabel('Password').fill('innocent1234')
+    await page.getByLabel('Password').fill('secret123')
 
     await page.getByRole('button', { name: 'Login' }).click()
 
