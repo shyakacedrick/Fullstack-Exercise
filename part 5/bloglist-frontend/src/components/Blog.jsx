@@ -55,11 +55,17 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
           </button>
       </p>
 
-      {canDelete && (
-        <button className="btn btn-danger" onClick={() => handleDelete(blog)}>
-          Remove
-        </button>
-      )}
+      {currentUser &&
+         blog.user &&
+         (blog.user.username === currentUser.username ||
+          blog.user.id === currentUser.id) && (
+            <button
+              className="btn btn-danger"
+              onClick={() => handleDelete(blog)}
+            >
+              Remove
+            </button>
+        )}
 
       <p>
         <strong>Added by:</strong> {blog.user?.name || "Unknown"}
