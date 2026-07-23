@@ -157,9 +157,9 @@ h1.page-title {
   padding:1rem; 
   transition: transform .14s ease, box-shadow .14s ease; 
 }
-.card:hover { 
-  transform: translateY(-6px); 
-  box-shadow: var(--shadow-2); 
+.card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: var(--shadow-2);
 }
 
 .blog-grid { 
@@ -167,6 +167,24 @@ h1.page-title {
   grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); 
   gap:1rem; 
   margin-top:1rem; 
+
+  .blog-card{
+    animation:fadeIn .35s ease;
+  }
+
+  @keyframes fadeIn{
+    
+    from{
+        opacity:0;
+        transform:translateY(18px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+  }
 }
 
 .blog-card {
@@ -284,10 +302,31 @@ h1.page-title {
 .topbar .actions { display:flex; gap:0.5rem; align-items:center; }
 
 /* Responsive */
-@media (max-width:640px) {
-  body {width: 100vw;}
-  .centered-card { padding:1.25rem; border-radius:12px; }
-  .container { padding:1rem; }
+@media(max-width:640px){
+
+.blog-header{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.detail-row{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.likes-section{
+    width:100%;
+    justify-content:space-between;
+}
+
+.remove-btn{
+    width:100%;
+}
+
+.blog-url{
+    max-width:100%;
+}
+
 }
 
 @media (max-width:420px) {
