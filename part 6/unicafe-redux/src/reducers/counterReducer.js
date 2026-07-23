@@ -6,6 +6,22 @@ const initialState = {
   bad: 0,
 }
 
+export const good = () => ({
+  type: 'GOOD',
+})
+
+export const ok = () => ({
+  type: 'OK',
+})
+
+export const bad = () => ({
+  type: 'BAD',
+})
+
+export const zero = () => ({
+  type: 'ZERO',
+})
+
 const counterReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'GOOD':

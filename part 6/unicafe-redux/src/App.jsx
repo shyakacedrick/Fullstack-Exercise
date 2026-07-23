@@ -1,23 +1,28 @@
-import store from './reducers/counterReducer'
+import store, {
+  good,
+  ok,
+  bad,
+  zero,
+} from './reducers/counterReducer'
 
 const App = () => {
   const state = store.getState()
 
   return (
     <div>
-      <button onClick={() => store.dispatch({ type: 'GOOD' })}>
+      <button onClick={() => store.dispatch(good())}>
         good
       </button>
 
-      <button onClick={() => store.dispatch({ type: 'OK' })}>
+      <button onClick={() => store.dispatch(ok())}>
         ok
       </button>
 
-      <button onClick={() => store.dispatch({ type: 'BAD' })}>
+      <button onClick={() => store.dispatch(bad())}>
         bad
       </button>
 
-      <button onClick={() => store.dispatch({ type: 'ZERO' })}>
+      <button onClick={() => store.dispatch(zero())}>
         reset stats
       </button>
 
