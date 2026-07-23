@@ -8,7 +8,9 @@ const Notification = ({ message }) => {
 
   return (
     <div className={className} role={type === 'error' ? 'alert' : 'status'}>
-      {text}
+      <Alert severity="success"/>
+      <Alert severity="error"/>
+        {text}
     </div>
   )
 }

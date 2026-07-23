@@ -59,10 +59,7 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
          blog.user &&
          (blog.user.username === currentUser.username ||
           blog.user.id === currentUser.id) && (
-            <button
-              className="btn btn-danger"
-              onClick={() => handleDelete(blog)}
-            >
+            <button className="btn btn-danger" onClick={() => handleDelete(blog)}>
               Remove
             </button>
         )}

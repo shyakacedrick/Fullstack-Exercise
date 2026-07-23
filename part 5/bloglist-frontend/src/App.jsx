@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react"
 
 import './App.css'
+import LogoutIcon from '@mui/icons-material/Logout'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -203,7 +204,10 @@ const handleDelete = async (blogToDelete) => {
 
         <div className="actions">
           <span style={{ color: 'var(--text-secondary)', fontWeight:600 }}>{user.name || user.username || 'user'}</span>
-          <button className="btn btn-secondary" onClick={handleLogout}>Logout</button>
+          <button className="btn btn-secondary" onClick={handleLogout}>
+            <LogoutIcon />
+              Logout
+          </button>
         </div>
       </div>
 
