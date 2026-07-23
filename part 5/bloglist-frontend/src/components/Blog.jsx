@@ -17,59 +17,116 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
     blogOwner === currentUser.username
 
   return (
-  <article className="card blog-card" aria-label={`Blog ${blog.title}`}>
-    {/* Collapsed View */}
-    <div style={hideWhenVisible}>
-      <h3 className="blog-title">{blog.title}</h3>
-      <div className="blog-meta">
-        <span>{blog.author}</span>
-        <button className="btn btn-secondary" onClick={toggleVisibility}>
-          View
-        </button>
-      </div>
-    </div>
+     <article className="card blog-card" aria-label={`Blog ${blog.title}`}>
+       {!visible ? (
+         <>
+           <div className="blog-header">
+             <div>
+               <h3 className="blog-title">{blog.title}</h3>
+               <p className="blog-author">
+                 {blog.author}
+               </p>
+             </div>   
 
-    {/* Expanded View */}
-    <div style={showWhenVisible}>
-      <h3 className="blog-title">{blog.title}</h3>
-      <div className="blog-meta">
-        <span>{blog.author}</span>
-        <button className="btn btn-secondary" onClick={toggleVisibility}>
-          Hide
-        </button>
-      </div>
+             <button
+               className="btn btn-secondary"
+               onClick={toggleVisibility}
+             >
+               View
+             </button>
+           </div>   
 
-      {blog.url && (
-        <p>
-          <strong>URL:</strong>{" "}
-          <a className="blog-url" href={blog.url} target="_blank" rel="noreferrer">
-            {blog.url}
-          </a>
-        </p>
-      )}
+           <div className="blog-footer">
+             <span className="likes-pill">
+               👍 {blog.likes}
+             </span>
+           </div>
+         </>
+       ) : (
+         <>
+           <div className="blog-header">
+             <div>
+               <h3 className="blog-title">
+                 {blog.title}
+               </h3>  
 
-      <p>
-        <strong>Likes:</strong> {blog.likes}
-          <button className="secondary-btn" onClick={() => handleLike(blog)}>
-            👍 Like
-          </button>
-      </p>
+               <p className="blog-author">
+                 {blog.author}
+               </p>
+             </div>   
 
-      {currentUser &&
-         blog.user &&
-         (blog.user.username === currentUser.username ||
-          blog.user.id === currentUser.id) && (
-            <button className="btn btn-danger" onClick={() => handleDelete(blog)}>
-              Remove
-            </button>
-        )}
+             <button
+               className="btn btn-secondary"
+               onClick={toggleVisibility}
+             >
+               Hide
+             </button>
+           </div>   
 
-      <p>
-        <strong>Added by:</strong> {blog.user?.name || "Unknown"}
-      </p>
-    </div>
-  </article>
-)
+           <div className="blog-details">   
+
+             <div className="detail-row">
+               <span className="detail-label">
+                 URL
+               </span>  
+
+               <a
+                 href={blog.url}
+                 target="_blank"
+                 rel="noreferrer"
+                 className="blog-url"
+               >
+                 {blog.url}
+               </a>
+             </div>   
+
+             <div className="detail-row">   
+
+               <span className="detail-label">
+                 Likes
+               </span>  
+
+               <div className="likes-section">  
+
+                 <span className="likes-number">
+                   {blog.likes}
+                 </span>  
+
+                 <button
+                   className="btn btn-primary btn-small"
+                   onClick={() => handleLike(blog)}
+                 >
+                   👍 Like
+                 </button>  
+
+               </div>   
+
+             </div>   
+
+             <div className="detail-row">
+               <span className="detail-label">
+                 Added by
+               </span>  
+
+               <span>
+                 {blog.user?.name || "Unknown"}
+               </span>
+             </div>   
+
+             {canDelete && (
+               <button
+                 className="btn btn-danger remove-btn"
+                 onClick={() => handleDelete(blog)}
+               >
+                 Remove Blog
+               </button>
+             )}   
+
+           </div>
+         </>
+       )}
+     </article>
+  )
 }
 
 export default Blog

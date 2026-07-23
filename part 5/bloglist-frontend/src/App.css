@@ -168,7 +168,94 @@ h1.page-title {
   gap:1rem; 
   margin-top:1rem; 
 }
-.blog-card { padding:1rem 1.1rem; }
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.blog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.blog-author {
+  margin-top: 6px;
+  color: var(--text-secondary);
+  font-size: .92rem;
+}
+
+.blog-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.likes-pill {
+  background: rgba(96,165,250,.15);
+  color: var(--primary);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-weight: 700;
+}
+
+.blog-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.detail-label {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.likes-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.likes-number {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--success);
+}
+
+.btn-small {
+  padding: .45rem .8rem;
+  font-size: .85rem;
+}
+
+.remove-btn {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.blog-url {
+  color: var(--primary);
+  text-decoration: none;
+  max-width: 320px;
+  overflow-wrap: anywhere;
+}
+
+.blog-url:hover {
+  text-decoration: underline;
+}
+
 .blog-title { 
   font-size:1.05rem; 
   margin:0 0 0.35rem 0; 
@@ -180,17 +267,6 @@ h1.page-title {
   color:var(--text-secondary); 
   display:flex; gap:0.75rem; 
   align-items:center; 
-}
-.blog-url { 
-  color:var(--primary); 
-  text-decoration:none; 
-  font-weight:600; 
-}
-
-.blog-details { 
-  margin-top: 16px; 
-  padding-top: 16px; 
-  border-top: 1px solid var(--border); 
 }
 
 .blog-details p { margin: 8px 0; }
