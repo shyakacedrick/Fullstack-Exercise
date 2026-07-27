@@ -1,7 +1,5 @@
 import { create } from 'zustand'
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
 const anecdotes = [
   {
     content: 'If it hurts, do it more often',
@@ -33,6 +31,8 @@ const anecdotes = [
 export const useAnecdotes = create((set) => ({
   anecdotes,
 
+  filter: '',
+
   vote: (id) =>
     set((state) => ({
       anecdotes: state.anecdotes.map((anecdote) =>
@@ -47,7 +47,12 @@ export const useAnecdotes = create((set) => ({
       anecdotes: state.anecdotes.concat({
         content,
         votes: 0,
-        id: getId(),
+        id: Date.now(),
       }),
     })),
+
+  setFilter: (filter) =>
+    set({
+      filter,
+    }),
 }))
