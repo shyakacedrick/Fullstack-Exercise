@@ -10,11 +10,11 @@ export const useAnecdotes = create((set) => ({
     anecdotes,
   }),
 
-  vote: (id) =>
+  updateAnecdote: (updatedAnecdote) =>
     set((state) => ({
       anecdotes: state.anecdotes.map((anecdote) =>
-        anecdote.id === id
-          ? { ...anecdote, votes: anecdote.votes + 1 }
+        anecdote.id === updatedAnecdote.id
+          ? updatedAnecdote
           : anecdote
       ),
     })),
