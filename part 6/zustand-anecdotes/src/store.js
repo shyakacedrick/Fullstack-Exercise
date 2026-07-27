@@ -32,4 +32,9 @@ export const useAnecdotes = create((set) => ({
     set({
       filter,
     }),
+
+  addAnecdote: (anecdote) =>
+    set((state) => ({
+      anecdotes: state.anecdotes.concat(anecdote),
+    })),
 }))

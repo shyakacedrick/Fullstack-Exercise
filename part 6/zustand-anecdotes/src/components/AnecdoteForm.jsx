@@ -1,24 +1,32 @@
 import { useAnecdotes } from '../store'
+import { createAnecdote } from '../services/anecdotes'
 
 const AnecdoteForm = () => {
-  const create = useAnecdotes((state) => state.create)
+  const addAnecdote = useAnecdotes((state) => state.addAnecdote)
 
-  const addAnecdote = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const content = event.target.anecdote.value
+    const content = event.target.anecdote.value.trim()
 
-    if (!content.trim()) return
+    if (!content) {
+      return
+    }
 
-    create(content)
+    const savedAnecdote = await createAnecdote(content)
+
+    addAnecdote(savedAnecdote)
 
     event.target.anecdote.value = ''
   }
 
   return (
-    <form onSubmit={addAnecdote}>
+    <form onSubmit={handleSubmit}>
       <div>
-        <input name="anecdote" />
+        <input
+          name="anecdote"
+          placeholder="Write a new anecdote..."
+        />
       </div>
 
       <button type="submit">

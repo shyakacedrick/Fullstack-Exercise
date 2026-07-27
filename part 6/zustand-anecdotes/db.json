@@ -24,6 +24,12 @@
       "content": "Programming without tests is like driving without brakes.",
       "votes": 0,
       "id": "5"
+    },
+    {
+      "content": "gits",
+      "votes": 0,
+      "id": "Cl4x5Vz8F_8"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
