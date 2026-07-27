@@ -1,8 +1,20 @@
-import AnecdoteForm from './components/AnecdoteForm'
-import AnecdoteList from './components/AnecdoteList'
+import { useEffect } from 'react'
+import { getAll } from './services/anecdotes'
+import { useAnecdotes } from './store'
+
 import Filter from './components/Filter'
+import AnecdoteList from './components/AnecdoteList'
+import AnecdoteForm from './components/AnecdoteForm'
 
 const App = () => {
+  const setAnecdotes = useAnecdotes((state) => state.setAnecdotes)
+
+  useEffect(() => {
+    getAll().then((anecdotes) => {
+      setAnecdotes(anecdotes)
+    })
+  }, [setAnecdotes])
+
   return (
     <div>
       <h2>Anecdotes</h2>
