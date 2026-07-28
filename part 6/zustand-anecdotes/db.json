@@ -7,28 +7,28 @@
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
-      "votes": 2,
+      "votes": 6,
       "id": "2"
     },
     {
       "content": "Premature optimization is the root of all evil.",
-      "votes": 0,
+      "votes": 1,
       "id": "3"
     },
     {
       "content": "Debugging is twice as hard as writing the code in the first place.",
-      "votes": 0,
+      "votes": 1,
       "id": "4"
     },
     {
       "content": "Programming without tests is like driving without brakes.",
-      "votes": 0,
+      "votes": 3,
       "id": "5"
     },
     {
-      "content": "gits",
-      "votes": 0,
-      "id": "Cl4x5Vz8F_8"
+      "content": "Conluded 6.10",
+      "votes": 1,
+      "id": "jy1LBMWWHtQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

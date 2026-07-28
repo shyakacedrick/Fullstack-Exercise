@@ -1,14 +1,12 @@
 import { useAnecdotes } from '../store'
 import { updateAnecdote } from '../services/anecdotes'
+import { useNotificationStore } from '../notificationStore'
 
 const AnecdoteList = () => {
   const anecdotes = useAnecdotes((state) => state.anecdotes)
-
   const filter = useAnecdotes((state) => state.filter)
-
-  const update = useAnecdotes(
-    (state) => state.updateAnecdote
-  )
+  const update = useAnecdotes((state) => state.updateAnecdote)
+  const showNotification = useNotificationStore((state) => state.showNotification)
 
   const handleVote = async (anecdote) => {
     const updated = {
@@ -19,6 +17,7 @@ const AnecdoteList = () => {
     const saved = await updateAnecdote(updated)
 
     update(saved)
+    showNotification( `you voted '${saved.content}'`)
   }
 
   const filtered = anecdotes
