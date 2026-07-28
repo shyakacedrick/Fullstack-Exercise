@@ -24,6 +24,12 @@ export const createAnecdote = async (content) => {
     }),
   })
 
+  if (!response.ok) {
+    const error = await response.json()
+  
+    throw new Error(error.error)
+  }
+  
   return await response.json()
 }
 

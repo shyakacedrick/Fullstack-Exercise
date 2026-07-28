@@ -26,26 +26,39 @@ export const useCreateAnecdote = () => {
   const [, dispatch] =
     useNotificationContext()
 
-  return useMutation({
-    mutationFn: createAnecdote,
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['anecdotes'],
-      })
-
-      dispatch({
-        type: 'SHOW',
-        payload: 'Anecdote created',
-      })
-
-      setTimeout(() => {
-        dispatch({
-          type: 'HIDE',
+    return useMutation({
+      mutationFn: createAnecdote,
+    
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['anecdotes'],
         })
-      }, 5000)
-    },
-  })
+    
+        dispatch({
+          type: 'SHOW',
+          payload: 'Anecdote created',
+        })
+    
+        setTimeout(() => {
+          dispatch({
+            type: 'HIDE',
+          })
+        }, 5000)
+      },
+    
+      onError: (error) => {
+        dispatch({
+          type: 'SHOW',
+          payload: error.message,
+        })
+    
+        setTimeout(() => {
+          dispatch({
+            type: 'HIDE',
+          })
+        }, 5000)
+      },
+    })
 }
 
 export const useVoteAnecdote = () => {
