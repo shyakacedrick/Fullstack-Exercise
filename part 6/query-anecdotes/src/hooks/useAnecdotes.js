@@ -10,7 +10,7 @@ import {
   updateAnecdote,
 } from '../requests'
 
-import { useNotificationContext } from '../NotificationContext'
+import { useNotify } from '../NotificationContext'
 
 export const useAnecdotes = () => {
   return useQuery({
@@ -22,50 +22,28 @@ export const useAnecdotes = () => {
 
 export const useCreateAnecdote = () => {
   const queryClient = useQueryClient()
+  const notify = useNotify()
 
-  const [, dispatch] =
-    useNotificationContext()
+  return useMutation({
+    mutationFn: createAnecdote,
 
-    return useMutation({
-      mutationFn: createAnecdote,
-    
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['anecdotes'],
-        })
-    
-        dispatch({
-          type: 'SHOW',
-          payload: 'Anecdote created',
-        })
-    
-        setTimeout(() => {
-          dispatch({
-            type: 'HIDE',
-          })
-        }, 5000)
-      },
-    
-      onError: (error) => {
-        dispatch({
-          type: 'SHOW',
-          payload: error.message,
-        })
-    
-        setTimeout(() => {
-          dispatch({
-            type: 'HIDE',
-          })
-        }, 5000)
-      },
-    })
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['anecdotes'],
+      })
+
+      notify('Anecdote created')
+    },
+
+    onError: (error) => {
+      notify(error.message)
+    },
+  })
 }
 
 export const useVoteAnecdote = () => {
   const queryClient = useQueryClient()
-
-  const [, dispatch] =
-    useNotificationContext()
+  const notify = useNotify()
 
   return useMutation({
     mutationFn: updateAnecdote,
@@ -75,16 +53,9 @@ export const useVoteAnecdote = () => {
         queryKey: ['anecdotes'],
       })
 
-      dispatch({
-        type: 'SHOW',
-        payload: `you voted '${returnedAnecdote.content}'`,
-      })
-
-      setTimeout(() => {
-        dispatch({
-          type: 'HIDE',
-        })
-      }, 5000)
+      notify(
+        `you voted '${returnedAnecdote.content}'`
+      )
     },
   })
 }

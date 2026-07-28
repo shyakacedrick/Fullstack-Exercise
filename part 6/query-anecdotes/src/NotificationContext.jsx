@@ -1,4 +1,8 @@
-import { createContext, useContext, useReducer } from 'react'
+import {
+  createContext,
+  useContext,
+  useReducer,
+} from 'react'
 
 const NotificationContext = createContext()
 
@@ -32,3 +36,20 @@ export const NotificationContextProvider = ({ children }) => {
 
 export const useNotificationContext = () =>
   useContext(NotificationContext)
+
+export const useNotify = () => {
+  const [, dispatch] = useNotificationContext()
+
+  return (message) => {
+    dispatch({
+      type: 'SHOW',
+      payload: message,
+    })
+
+    setTimeout(() => {
+      dispatch({
+        type: 'HIDE',
+      })
+    }, 5000)
+  }
+}
