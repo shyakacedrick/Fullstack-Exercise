@@ -36,3 +36,16 @@ export const updateAnecdote = async (anecdote) => {
 
   return await response.json()
 }
+
+
+
+
+
+
+
+
+export const deleteAnecdote = async (id) => {
+  await fetch(`${baseUrl}/${id}`, {
+    method: 'DELETE',
+  })
+}

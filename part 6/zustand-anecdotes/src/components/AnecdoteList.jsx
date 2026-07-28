@@ -1,11 +1,12 @@
 import { useAnecdotes } from '../store'
-import { updateAnecdote } from '../services/anecdotes'
+import {updateAnecdote, deleteAnecdote} from '../services/anecdotes'
 import { useNotificationStore } from '../notificationStore'
 
 const AnecdoteList = () => {
   const anecdotes = useAnecdotes((state) => state.anecdotes)
   const filter = useAnecdotes((state) => state.filter)
   const update = useAnecdotes((state) => state.updateAnecdote)
+  const remove = useAnecdotes((state) => state.removeAnecdote)
   const showNotification = useNotificationStore((state) => state.showNotification)
 
   const handleVote = async (anecdote) => {
@@ -18,6 +19,13 @@ const AnecdoteList = () => {
 
     update(saved)
     showNotification( `you voted '${saved.content}'`)
+  }
+
+  const handleDelete = async (anecdote) => {
+    await deleteAnecdote(anecdote.id)
+
+    remove(anecdote.id)
+    showNotification(`you deleted '${anecdote.content}'`)
   }
 
   const filtered = anecdotes
@@ -37,13 +45,15 @@ const AnecdoteList = () => {
           <div>
             has {anecdote.votes}
 
-            <button
-              onClick={() =>
-                handleVote(anecdote)
-              }
-            >
+            <button onClick={() => handleVote(anecdote)}>
               vote
             </button>
+            
+          {anecdote.votes === 0 && (
+            <button onClick={() => handleDelete(anecdote)} style={{ marginLeft: 10 }}>
+              delete
+            </button>
+          )}
           </div>
         </div>
       ))}

@@ -8,7 +8,7 @@ export const useAnecdotes = create((set) => ({
   setAnecdotes: (anecdotes) =>
   set({
     anecdotes,
-  }),
+    }),
 
   updateAnecdote: (updatedAnecdote) =>
     set((state) => ({
@@ -36,5 +36,12 @@ export const useAnecdotes = create((set) => ({
   addAnecdote: (anecdote) =>
     set((state) => ({
       anecdotes: state.anecdotes.concat(anecdote),
+    })),
+
+  removeAnecdote: (id) =>
+    set((state) => ({
+      anecdotes: state.anecdotes.filter(
+        (anecdote) => anecdote.id !== id
+      ),
     })),
 }))
