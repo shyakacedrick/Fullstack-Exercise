@@ -10,6 +10,8 @@ import {
   updateAnecdote,
 } from '../requests'
 
+import { useNotificationContext } from '../NotificationContext'
+
 export const useAnecdotes = () => {
   return useQuery({
     queryKey: ['anecdotes'],
@@ -21,6 +23,9 @@ export const useAnecdotes = () => {
 export const useCreateAnecdote = () => {
   const queryClient = useQueryClient()
 
+  const [, dispatch] =
+    useNotificationContext()
+
   return useMutation({
     mutationFn: createAnecdote,
 
@@ -28,6 +33,17 @@ export const useCreateAnecdote = () => {
       queryClient.invalidateQueries({
         queryKey: ['anecdotes'],
       })
+
+      dispatch({
+        type: 'SHOW',
+        payload: 'Anecdote created',
+      })
+
+      setTimeout(() => {
+        dispatch({
+          type: 'HIDE',
+        })
+      }, 5000)
     },
   })
 }
@@ -35,13 +51,27 @@ export const useCreateAnecdote = () => {
 export const useVoteAnecdote = () => {
   const queryClient = useQueryClient()
 
+  const [, dispatch] =
+    useNotificationContext()
+
   return useMutation({
     mutationFn: updateAnecdote,
 
-    onSuccess: () => {
+    onSuccess: (returnedAnecdote) => {
       queryClient.invalidateQueries({
         queryKey: ['anecdotes'],
       })
+
+      dispatch({
+        type: 'SHOW',
+        payload: `you voted '${returnedAnecdote.content}'`,
+      })
+
+      setTimeout(() => {
+        dispatch({
+          type: 'HIDE',
+        })
+      }, 5000)
     },
   })
 }
