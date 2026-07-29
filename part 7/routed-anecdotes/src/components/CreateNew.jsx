@@ -18,9 +18,9 @@ const CreateNew = ({ addAnecdote }) => {
     e.preventDefault()
 
     addAnecdote({
-      content: content.value,
-      author: author.value,
-      info: info.value,
+      content: content.inputProps.value,
+      author: author.inputProps.value,
+      info: info.inputProps.value,
       votes: 0,
     })
 
@@ -37,7 +37,7 @@ const CreateNew = ({ addAnecdote }) => {
           content
           <input
             name="content"
-            {...content}
+            {...content.inputProps}
           />
         </div>
 
@@ -45,7 +45,7 @@ const CreateNew = ({ addAnecdote }) => {
           author
           <input
             name="author"
-            {...author}
+            {...author.inputProps} 
           />
         </div>
 
@@ -53,7 +53,7 @@ const CreateNew = ({ addAnecdote }) => {
           url for more info
           <input
             name="info"
-            {...info}
+             {...info.inputProps}
           />
         </div>
 
