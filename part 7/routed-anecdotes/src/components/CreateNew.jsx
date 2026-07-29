@@ -8,6 +8,12 @@ const CreateNew = ({ addAnecdote }) => {
   const author = useField('text')
   const info = useField('text')
 
+  const resetFields = () => {
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -18,6 +24,7 @@ const CreateNew = ({ addAnecdote }) => {
       votes: 0,
     })
 
+    resetFields()
     navigate('/')
   }
 
@@ -51,6 +58,10 @@ const CreateNew = ({ addAnecdote }) => {
         </div>
 
         <button>create</button>
+
+        <button type="button" onClick={resetFields}>
+          reset
+        </button>
       </form>
     </div>
   )
