@@ -8,8 +8,7 @@ import CreateNew from './components/CreateNew'
 
 const App = () => {
 
-  const { anecdotes } = useAnecdotes()
-  const addAnecdote = () => {}
+  const { anecdotes, addAnecdote } = useAnecdotes()
 
   return (
     <Router>
