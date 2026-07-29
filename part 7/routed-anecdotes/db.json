@@ -13,13 +13,6 @@
       "info": "http://wiki.c2.com/?PrematureOptimization",
       "votes": 0,
       "id": "2"
-    },
-    {
-      "content": "keep drinking code",
-      "author": "tester",
-      "info": "test.com",
-      "votes": 0,
-      "id": "9T04_8L3bbU"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
