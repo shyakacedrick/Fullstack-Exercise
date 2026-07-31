@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react"
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import './App.css'
 import LogoutIcon from '@mui/icons-material/Logout'
@@ -10,7 +11,9 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import Notification from "./components/Notification"
 import Togglable from "./components/Togglable"
+import Home from './components/Home'
 import ErrorBoundary from './components/ErrorBoundary'
+import NotFound from './Pages/NotFound'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -56,6 +59,7 @@ const App = () => {
       )
 
       setUser(user)
+      window.location.href = '/'
       const displayName = user?.name || user?.username || user?.email || 'user'
       setNotification({ message: `Welcome ${displayName}!`, type: 'success' })
       setTimeout(() => {
@@ -69,29 +73,6 @@ const App = () => {
         setNotification(null)
       }, 5000)
     }
-  }
-
-  if (user === null) {
-    return (
-      <div className="app-shell">
-        <section className="centered-card">
-          <div style={{ marginBottom: '1rem' }}>
-            <span className="brand">BlogList</span>
-            <span className="brand-sub">Personal blogs · simple CMS</span>
-          </div>
-          <Notification message={notification} />
-          <h2 style={{ marginTop: '0.5rem' }}>Log in</h2>
-
-          <LoginForm
-            username={username}
-            password={password}
-            setUsername={setUsername}
-            setPassword={setPassword}
-            handleLogin={handleLogin}
-          />
-        </section>
-      </div>
-    )
   }
 
   const handleLogout = () => {
@@ -197,62 +178,68 @@ const handleDelete = async (blogToDelete) => {
 
   return (
     <ErrorBoundary>
-      <div className="container">
-        <div className="topbar">
-          <div>
-            <span className="brand">BlogList</span>
-            <span className="brand-sub">
-              Personal blogs · simple CMS
-            </span>
-          </div>
-  
-          <div className="actions">
-            <span
-              style={{
-                color: 'var(--text-secondary)',
-                fontWeight: 600,
-              }}
-            >
-              {user.name || user.username || 'user'}
-            </span>
-            
-            <button
-              className="btn btn-secondary"
-              onClick={handleLogout}
-            >
-              <LogoutIcon />
-              Logout
-            </button>
-          </div>
-        </div>
-            
-        <Notification message={notification} />
-            
-        <h1 className="page-title">Blogs</h1>
-            
-        <Togglable
-          buttonLabel="New Blog"
-          ref={blogFormRef}
-        >
-          <div className="card">
-            <BlogForm createBlog={createBlog} />
-          </div>
-        </Togglable>
-            
-        <div className="blog-grid">
-          {[...blogs]
-            .sort((a, b) => b.likes - a.likes)
-            .map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            user ? (
+              <Home
+                blogs={blogs}
+                user={user}
+                blogFormRef={blogFormRef}
+                createBlog={createBlog}
                 handleLike={handleLike}
                 handleDelete={handleDelete}
-                currentUser={user}
+                handleLogout={handleLogout}
+                Notification={Notification}
+                notification={notification}
+                BlogForm={BlogForm}
+                Blog={Blog}
+                Togglable={Togglable}
+                LogoutIcon={LogoutIcon}
               />
-            ))}
-        </div>
-      </div>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            <div className="app-shell">
+              <section className="centered-card">
+                <div style={{ marginBottom: '1rem' }}>
+                  <span className="brand">
+                    BlogList
+                  </span>
+
+                  <span className="brand-sub">
+                    Personal blogs · simple CMS
+                  </span>
+                </div>
+
+                <Notification message={notification} />
+
+                <h2>Log in</h2>
+
+                <LoginForm
+                  username={username}
+                  password={password}
+                  setUsername={setUsername}
+                  setPassword={setPassword}
+                  handleLogin={handleLogin}
+                />
+              </section>
+            </div>
+          }
+        />
+
+        <Route
+          path="*"
+          element={<NotFound />}
+        />
+      </Routes>
     </ErrorBoundary>
   )
 }

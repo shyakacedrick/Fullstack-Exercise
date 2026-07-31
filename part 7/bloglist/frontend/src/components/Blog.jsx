@@ -13,7 +13,7 @@ const Blog = ({
   }
 
   // Uncomment ONLY to test Exercise 7.8
-  throw new Error('Simulated error')
+  // throw new Error('Simulated error')
 
   const blogOwner =
     typeof blog.user === 'object'
