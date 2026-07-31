@@ -5,6 +5,7 @@ import './App.css'
 import LogoutIcon from '@mui/icons-material/Logout'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import useBlogStore from './stores/blogStore'
 
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
@@ -18,10 +19,28 @@ import NotFound from './Pages/NotFound'
 import useNotificationStore from './stores/notificationStore'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  
+
+  const blogs = useBlogStore((state) => state.blogs)
+
+  const initializeBlogs = useBlogStore(
+    (state) => state.initializeBlogs
+  )
+
+  const createBlogStore = useBlogStore(
+    (state) => state.createBlog
+  )
+
+  const likeBlogStore = useBlogStore(
+    (state) => state.likeBlog
+  )
+
+  const deleteBlogStore = useBlogStore(
+    (state) => state.deleteBlog
+  )
 
   const blogFormRef = useRef()
 
@@ -30,10 +49,8 @@ const App = () => {
   )
 
   useEffect(() => {
-    blogService.getAll().then((returnedBlogs) => {
-      setBlogs(returnedBlogs)
-    })
-  }, [])
+    initializeBlogs()
+  }, [initializeBlogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem(
@@ -104,17 +121,12 @@ const App = () => {
   const createBlog = async (blogObject) => {
     try {
       const returnedBlog =
-        await blogService.create(blogObject)
+      await createBlogStore(blogObject)
 
       blogFormRef.current.toggleVisibility()
 
-      setBlogs((currentBlogs) =>
-        currentBlogs.concat(returnedBlog)
-      )
-
       showNotification(
-        `Blog "${returnedBlog.title}" added successfully`,
-        'success'
+        `Blog "${returnedBlog.title}" added successfully`
       )
     } catch {
       showNotification(
@@ -124,34 +136,9 @@ const App = () => {
     }
   }
 
-  const handleLike = async (blogToUpdate) => {
+  const handleLike = async (blog) => {
     try {
-      const updatedBlog = {
-        ...blogToUpdate,
-        likes: blogToUpdate.likes + 1,
-        user:
-          blogToUpdate.user.id ||
-          blogToUpdate.user,
-      }
-
-      const returnedBlog =
-        await blogService.update(
-          blogToUpdate.id,
-          updatedBlog
-        )
-
-      setBlogs((currentBlogs) =>
-        currentBlogs.map((blog) =>
-          blog.id === returnedBlog.id
-            ? returnedBlog
-            : blog
-        )
-      )
-
-      showNotification(
-        `You liked "${returnedBlog.title}"`,
-        'success'
-      )
+      await likeBlogStore(blog)
     } catch {
       showNotification(
         'Failed to like the blog',
@@ -170,13 +157,10 @@ const App = () => {
     }
 
     try {
-      await blogService.remove(blogToDelete.id)
+      await deleteBlogStore(blogToDelete)
 
-      setBlogs((currentBlogs) =>
-        currentBlogs.filter(
-          (blog) =>
-            blog.id !== blogToDelete.id
-        )
+      showNotification(
+        'Blog deleted successfully'
       )
 
       showNotification(
