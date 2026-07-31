@@ -1,11 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({
-  blog,
-  handleLike,
-  handleDelete,
-  currentUser,
-}) => {
+const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
@@ -15,73 +10,47 @@ const Blog = ({
   // Uncomment ONLY to test Exercise 7.8
   // throw new Error('Simulated error')
 
-  const blogOwner =
-    typeof blog.user === 'object'
-      ? blog.user.username
-      : null
+  const blogOwner = typeof blog.user === 'object' ? blog.user.username : null
 
-  const canDelete =
-    currentUser &&
-    blogOwner === currentUser.username
+  const canDelete = currentUser && blogOwner === currentUser.username
 
   return (
-    <article
-      className="card blog-card"
-      aria-label={`Blog ${blog.title}`}
-    >
+    <article className="card blog-card" aria-label={`Blog ${blog.title}`}>
       {!visible ? (
         <>
           <div className="blog-header">
             <div>
-              <h3 className="blog-title">
-                {blog.title}
-              </h3>
+              <h3 className="blog-title">{blog.title}</h3>
 
-              <p className="blog-author">
-                {blog.author}
-              </p>
+              <p className="blog-author">{blog.author}</p>
             </div>
 
-            <button
-              className="btn btn-secondary"
-              onClick={toggleVisibility}
-            >
+            <button className="btn btn-secondary" onClick={toggleVisibility}>
               View
             </button>
           </div>
 
           <div className="blog-footer">
-            <span className="likes-pill">
-              👍 {blog.likes}
-            </span>
+            <span className="likes-pill">👍 {blog.likes}</span>
           </div>
         </>
       ) : (
         <>
           <div className="blog-header">
             <div>
-              <h3 className="blog-title">
-                {blog.title}
-              </h3>
+              <h3 className="blog-title">{blog.title}</h3>
 
-              <p className="blog-author">
-                {blog.author}
-              </p>
+              <p className="blog-author">{blog.author}</p>
             </div>
 
-            <button
-              className="btn btn-secondary"
-              onClick={toggleVisibility}
-            >
+            <button className="btn btn-secondary" onClick={toggleVisibility}>
               Hide
             </button>
           </div>
 
           <div className="blog-details">
             <div className="detail-row">
-              <span className="detail-label">
-                URL
-              </span>
+              <span className="detail-label">URL</span>
 
               <a
                 href={blog.url}
@@ -94,14 +63,10 @@ const Blog = ({
             </div>
 
             <div className="detail-row">
-              <span className="detail-label">
-                Likes
-              </span>
+              <span className="detail-label">Likes</span>
 
               <div className="likes-section">
-                <span className="likes-number">
-                  {blog.likes}
-                </span>
+                <span className="likes-number">{blog.likes}</span>
 
                 <button
                   className="btn btn-primary btn-small"
@@ -113,21 +78,15 @@ const Blog = ({
             </div>
 
             <div className="detail-row">
-              <span className="detail-label">
-                Added by
-              </span>
+              <span className="detail-label">Added by</span>
 
-              <span>
-                {blog.user?.name || 'Unknown'}
-              </span>
+              <span>{blog.user?.name || 'Unknown'}</span>
             </div>
 
             {canDelete && (
               <button
                 className="btn btn-danger remove-btn"
-                onClick={() =>
-                  handleDelete(blog)
-                }
+                onClick={() => handleDelete(blog)}
               >
                 Remove Blog
               </button>

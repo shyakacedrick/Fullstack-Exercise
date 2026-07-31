@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
 import './App.css'
@@ -9,8 +9,8 @@ import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
-import Notification from "./components/Notification"
-import Togglable from "./components/Togglable"
+import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import Home from './components/Home'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './Pages/NotFound'
@@ -23,23 +23,18 @@ const App = () => {
   const [notification, setNotification] = useState(null)
   const blogFormRef = useRef()
 
-
   useEffect(() => {
-  blogService
-    .getAll()
-    .then(returnedBlogs => {
+    blogService.getAll().then((returnedBlogs) => {
       setBlogs(returnedBlogs)
     })
   }, [])
 
   useEffect(() => {
-  const loggedUserJSON = window.localStorage.getItem(
-    'loggedBlogAppUser'
-  )
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
 
-  if (loggedUserJSON) {
-    const user = JSON.parse(loggedUserJSON)
-    setUser(user)
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
@@ -49,14 +44,11 @@ const App = () => {
 
     try {
       const user = await loginService.login({ username, password })
-      
+
       blogService.setToken(user.token)
 
       // Save to browser
-      window.localStorage.setItem(
-        'loggedBlogAppUser',
-        JSON.stringify(user)
-      )
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
 
       setUser(user)
       window.location.href = '/'
@@ -86,95 +78,89 @@ const App = () => {
   }
 
   const createBlog = async (blogObject) => {
-  try {
-        const returnedBlog =
-          await blogService.create(blogObject)
+    try {
+      const returnedBlog = await blogService.create(blogObject)
 
-        blogFormRef.current.toggleVisibility()
-        setBlogs(currentBlogs => currentBlogs.concat(returnedBlog))
+      blogFormRef.current.toggleVisibility()
+      setBlogs((currentBlogs) => currentBlogs.concat(returnedBlog))
 
-          const showNotification = (message, type = "success") => {
-            setNotification({ message, type })
-            setTimeout(() => {
-              setNotification(null)
-            }, 5000)
-          }
-        
-          showNotification( `Blog "${returnedBlog.title}" added successfully`)
+      const showNotification = (message, type = 'success') => {
+        setNotification({ message, type })
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+      }
 
-  } catch {
+      showNotification(`Blog "${returnedBlog.title}" added successfully`)
+    } catch {
       setNotification({ message: 'Failed to create blog', type: 'error' })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
     }
-}
+  }
 
-const handleLike = async (blogToUpdate) => {
-  try {
-    const updatedBlog = {
-      ...blogToUpdate,
-      likes: blogToUpdate.likes + 1,
-      user: blogToUpdate.user.id || blogToUpdate.user,
-    }
+  const handleLike = async (blogToUpdate) => {
+    try {
+      const updatedBlog = {
+        ...blogToUpdate,
+        likes: blogToUpdate.likes + 1,
+        user: blogToUpdate.user.id || blogToUpdate.user,
+      }
 
-    const returnedBlog = await blogService.update(
-      blogToUpdate.id,
-      updatedBlog
-    )
+      const returnedBlog = await blogService.update(
+        blogToUpdate.id,
+        updatedBlog
+      )
 
-      setBlogs(currentBlogs =>
-        currentBlogs.map(blog =>
-          blog.id === returnedBlog.id
-            ? returnedBlog
-            : blog
+      setBlogs((currentBlogs) =>
+        currentBlogs.map((blog) =>
+          blog.id === returnedBlog.id ? returnedBlog : blog
         )
       )
-  } catch {
-    setNotification({
-      message: "Failed to like the blog",
-      type: "error",
-    })
+    } catch {
+      setNotification({
+        message: 'Failed to like the blog',
+        type: 'error',
+      })
 
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-  }
-}
-
-const handleDelete = async (blogToDelete) => {
-  const confirmDelete = window.confirm(
-    `Remove blog "${blogToDelete.title}" by ${blogToDelete.author}?`
-  )
-
-  if (!confirmDelete) {
-    return
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
   }
 
-  try {
-    await blogService.remove(blogToDelete.id)
-    setBlogs(currentBlogs =>
-      currentBlogs.filter(
-        blog => blog.id !== blogToDelete.id
-      )
+  const handleDelete = async (blogToDelete) => {
+    const confirmDelete = window.confirm(
+      `Remove blog "${blogToDelete.title}" by ${blogToDelete.author}?`
     )
-    setNotification({
-      message: "Blog deleted successfully",
-      type: "success",
-    })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-  } catch {
-    setNotification({
-      message: "Failed to delete blog",
-      type: "error",
-    })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
+
+    if (!confirmDelete) {
+      return
+    }
+
+    try {
+      await blogService.remove(blogToDelete.id)
+      setBlogs((currentBlogs) =>
+        currentBlogs.filter((blog) => blog.id !== blogToDelete.id)
+      )
+      setNotification({
+        message: 'Blog deleted successfully',
+        type: 'success',
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    } catch {
+      setNotification({
+        message: 'Failed to delete blog',
+        type: 'error',
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
   }
-}
 
   return (
     <ErrorBoundary>
@@ -210,13 +196,9 @@ const handleDelete = async (blogToDelete) => {
             <div className="app-shell">
               <section className="centered-card">
                 <div style={{ marginBottom: '1rem' }}>
-                  <span className="brand">
-                    BlogList
-                  </span>
+                  <span className="brand">BlogList</span>
 
-                  <span className="brand-sub">
-                    Personal blogs · simple CMS
-                  </span>
+                  <span className="brand-sub">Personal blogs · simple CMS</span>
                 </div>
 
                 <Notification message={notification} />
@@ -235,16 +217,10 @@ const handleDelete = async (blogToDelete) => {
           }
         />
 
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </ErrorBoundary>
   )
 }
 
 export default App
-
-
-

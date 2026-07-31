@@ -19,9 +19,7 @@ const Home = ({
         <div>
           <span className="brand">BlogList</span>
 
-          <span className="brand-sub">
-            Personal blogs · simple CMS
-          </span>
+          <span className="brand-sub">Personal blogs · simple CMS</span>
         </div>
 
         <div className="actions">
@@ -34,10 +32,7 @@ const Home = ({
             {user.name || user.username}
           </span>
 
-          <button
-            className="btn btn-secondary"
-            onClick={handleLogout}
-          >
+          <button className="btn btn-secondary" onClick={handleLogout}>
             <LogoutIcon />
             Logout
           </button>
@@ -46,14 +41,9 @@ const Home = ({
 
       <Notification message={notification} />
 
-      <h1 className="page-title">
-        Blogs
-      </h1>
+      <h1 className="page-title">Blogs</h1>
 
-      <Togglable
-        buttonLabel="New Blog"
-        ref={blogFormRef}
-      >
+      <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <div className="card">
           <BlogForm createBlog={createBlog} />
         </div>

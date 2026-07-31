@@ -14,9 +14,7 @@ const ErrorFallback = ({ error }) => {
 
 const ErrorBoundary = ({ children }) => {
   return (
-    <ReactErrorBoundary
-      FallbackComponent={ErrorFallback}
-    >
+    <ReactErrorBoundary FallbackComponent={ErrorFallback}>
       {children}
     </ReactErrorBoundary>
   )

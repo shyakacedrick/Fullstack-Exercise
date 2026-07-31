@@ -20,19 +20,12 @@ const create = async (newBlog) => {
     },
   }
 
-  const response = await axios.post(
-    baseUrl,
-    newBlog,
-    config
-  )
+  const response = await axios.post(baseUrl, newBlog, config)
   return response.data
 }
 
 const update = async (id, updatedBlog) => {
-  const response = await axios.put(
-    `${baseUrl}/${id}`,
-    updatedBlog
-  )
+  const response = await axios.put(`${baseUrl}/${id}`, updatedBlog)
   return response.data
 }
 
