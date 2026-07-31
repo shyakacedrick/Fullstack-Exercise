@@ -7,7 +7,6 @@ const Home = ({
   handleDelete,
   handleLogout,
   Notification,
-  notification,
   BlogForm,
   Blog,
   Togglable,
@@ -39,7 +38,7 @@ const Home = ({
         </div>
       </div>
 
-      <Notification message={notification} />
+      <Notification />
 
       <h1 className="page-title">Blogs</h1>
 

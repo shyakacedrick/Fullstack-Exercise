@@ -15,13 +15,19 @@ import Home from './components/Home'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './Pages/NotFound'
 
+import useNotificationStore from './stores/notificationStore'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
+
   const blogFormRef = useRef()
+
+  const showNotification = useNotificationStore(
+    (state) => state.showNotification
+  )
 
   useEffect(() => {
     blogService.getAll().then((returnedBlogs) => {
@@ -30,7 +36,9 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+    const loggedUserJSON = window.localStorage.getItem(
+      'loggedBlogAppUser'
+    )
 
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -43,60 +51,76 @@ const App = () => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login({
+        username,
+        password,
+      })
 
       blogService.setToken(user.token)
 
-      // Save to browser
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+      window.localStorage.setItem(
+        'loggedBlogAppUser',
+        JSON.stringify(user)
+      )
 
       setUser(user)
-      window.location.href = '/'
-      const displayName = user?.name || user?.username || user?.email || 'user'
-      setNotification({ message: `Welcome ${displayName}!`, type: 'success' })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+
+      const displayName =
+        user?.name ||
+        user?.username ||
+        user?.email ||
+        'user'
+
+      showNotification(
+        `Welcome ${displayName}!`,
+        'success'
+      )
+
       setUsername('')
       setPassword('')
+
+      window.location.href = '/'
     } catch {
-      setNotification({ message: 'Wrong username or password', type: 'error' })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      showNotification(
+        'Wrong username or password',
+        'error'
+      )
     }
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogAppUser')
+    window.localStorage.removeItem(
+      'loggedBlogAppUser'
+    )
+
     setUser(null)
 
-    setNotification({ message: 'Logged out successfully', type: 'success' })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
+    showNotification(
+      'Logged out successfully',
+      'success'
+    )
   }
 
   const createBlog = async (blogObject) => {
     try {
-      const returnedBlog = await blogService.create(blogObject)
+      const returnedBlog =
+        await blogService.create(blogObject)
 
       blogFormRef.current.toggleVisibility()
-      setBlogs((currentBlogs) => currentBlogs.concat(returnedBlog))
 
-      const showNotification = (message, type = 'success') => {
-        setNotification({ message, type })
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
-      }
+      setBlogs((currentBlogs) =>
+        currentBlogs.concat(returnedBlog)
+      )
 
-      showNotification(`Blog "${returnedBlog.title}" added successfully`)
+      showNotification(
+        `Blog "${returnedBlog.title}" added successfully`,
+        'success'
+      )
     } catch {
-      setNotification({ message: 'Failed to create blog', type: 'error' })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      showNotification(
+        'Failed to create blog',
+        'error'
+      )
     }
   }
 
@@ -105,28 +129,34 @@ const App = () => {
       const updatedBlog = {
         ...blogToUpdate,
         likes: blogToUpdate.likes + 1,
-        user: blogToUpdate.user.id || blogToUpdate.user,
+        user:
+          blogToUpdate.user.id ||
+          blogToUpdate.user,
       }
 
-      const returnedBlog = await blogService.update(
-        blogToUpdate.id,
-        updatedBlog
-      )
+      const returnedBlog =
+        await blogService.update(
+          blogToUpdate.id,
+          updatedBlog
+        )
 
       setBlogs((currentBlogs) =>
         currentBlogs.map((blog) =>
-          blog.id === returnedBlog.id ? returnedBlog : blog
+          blog.id === returnedBlog.id
+            ? returnedBlog
+            : blog
         )
       )
-    } catch {
-      setNotification({
-        message: 'Failed to like the blog',
-        type: 'error',
-      })
 
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      showNotification(
+        `You liked "${returnedBlog.title}"`,
+        'success'
+      )
+    } catch {
+      showNotification(
+        'Failed to like the blog',
+        'error'
+      )
     }
   }
 
@@ -141,24 +171,23 @@ const App = () => {
 
     try {
       await blogService.remove(blogToDelete.id)
+
       setBlogs((currentBlogs) =>
-        currentBlogs.filter((blog) => blog.id !== blogToDelete.id)
+        currentBlogs.filter(
+          (blog) =>
+            blog.id !== blogToDelete.id
+        )
       )
-      setNotification({
-        message: 'Blog deleted successfully',
-        type: 'success',
-      })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+
+      showNotification(
+        'Blog deleted successfully',
+        'success'
+      )
     } catch {
-      setNotification({
-        message: 'Failed to delete blog',
-        type: 'error',
-      })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      showNotification(
+        'Failed to delete blog',
+        'error'
+      )
     }
   }
 
@@ -178,14 +207,16 @@ const App = () => {
                 handleDelete={handleDelete}
                 handleLogout={handleLogout}
                 Notification={Notification}
-                notification={notification}
                 BlogForm={BlogForm}
                 Blog={Blog}
                 Togglable={Togglable}
                 LogoutIcon={LogoutIcon}
               />
             ) : (
-              <Navigate to="/login" replace />
+              <Navigate
+                to="/login"
+                replace
+              />
             )
           }
         />
@@ -195,13 +226,21 @@ const App = () => {
           element={
             <div className="app-shell">
               <section className="centered-card">
-                <div style={{ marginBottom: '1rem' }}>
-                  <span className="brand">BlogList</span>
+                <div
+                  style={{
+                    marginBottom: '1rem',
+                  }}
+                >
+                  <span className="brand">
+                    BlogList
+                  </span>
 
-                  <span className="brand-sub">Personal blogs · simple CMS</span>
+                  <span className="brand-sub">
+                    Personal blogs · simple CMS
+                  </span>
                 </div>
 
-                <Notification message={notification} />
+                <Notification />
 
                 <h2>Log in</h2>
 
@@ -217,7 +256,10 @@ const App = () => {
           }
         />
 
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="*"
+          element={<NotFound />}
+        />
       </Routes>
     </ErrorBoundary>
   )
