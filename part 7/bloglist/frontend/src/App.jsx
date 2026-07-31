@@ -10,6 +10,7 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import Notification from "./components/Notification"
 import Togglable from "./components/Togglable"
+import ErrorBoundary from './components/ErrorBoundary'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -195,40 +196,64 @@ const handleDelete = async (blogToDelete) => {
 }
 
   return (
-    <div className="container">
-      <div className="topbar">
-        <div>
-          <span className="brand">BlogList</span>
-          <span className="brand-sub">Personal blogs · simple CMS</span>
-        </div>
-
-        <div className="actions">
-          <span style={{ color: 'var(--text-secondary)', fontWeight:600 }}>{user.name || user.username || 'user'}</span>
-          <button className="btn btn-secondary" onClick={handleLogout}>
-            <LogoutIcon />
+    <ErrorBoundary>
+      <div className="container">
+        <div className="topbar">
+          <div>
+            <span className="brand">BlogList</span>
+            <span className="brand-sub">
+              Personal blogs · simple CMS
+            </span>
+          </div>
+  
+          <div className="actions">
+            <span
+              style={{
+                color: 'var(--text-secondary)',
+                fontWeight: 600,
+              }}
+            >
+              {user.name || user.username || 'user'}
+            </span>
+            
+            <button
+              className="btn btn-secondary"
+              onClick={handleLogout}
+            >
+              <LogoutIcon />
               Logout
-          </button>
+            </button>
+          </div>
+        </div>
+            
+        <Notification message={notification} />
+            
+        <h1 className="page-title">Blogs</h1>
+            
+        <Togglable
+          buttonLabel="New Blog"
+          ref={blogFormRef}
+        >
+          <div className="card">
+            <BlogForm createBlog={createBlog} />
+          </div>
+        </Togglable>
+            
+        <div className="blog-grid">
+          {[...blogs]
+            .sort((a, b) => b.likes - a.likes)
+            .map((blog) => (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                handleLike={handleLike}
+                handleDelete={handleDelete}
+                currentUser={user}
+              />
+            ))}
         </div>
       </div>
-
-      <Notification message={notification} />
-
-      <h1 className="page-title">Blogs</h1>
-
-      <Togglable buttonLabel="New Blog" ref={blogFormRef}>
-        <div className="card">
-          <BlogForm createBlog={createBlog} />
-        </div>
-      </Togglable>
-
-      <div className="blog-grid">
-        {[...blogs]
-        .sort((a, b) => b.likes - a.likes)
-        .map(blog => (
-          <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} currentUser={user}/>
-        ))}
-      </div>
-    </div>
+    </ErrorBoundary>
   )
 }
 
