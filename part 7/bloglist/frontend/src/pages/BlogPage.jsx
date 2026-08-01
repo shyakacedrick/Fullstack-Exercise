@@ -8,15 +8,38 @@ const BlogPage = () => {
   const { id } = useParams()
 
   const [blog, setBlog] = useState(null)
+  const [comment, setComment] = useState('')
+
+  const loadBlog = async () => {
+    const returnedBlog = await blogService.getById(id)
+    setBlog(returnedBlog)
+  }
 
   useEffect(() => {
-    blogService.getById(id).then((returnedBlog) => {
-      setBlog(returnedBlog)
-    })
+    loadBlog()
   }, [id])
 
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    if (!comment.trim()) {
+      return
+    }
+
+    await blogService.addComment(id, comment)
+
+    setComment('')
+
+    await loadBlog()
+  }
+
   if (!blog) {
-    return <div className="container">Loading...</div>
+    return (
+      <div className="container">
+        <Menu />
+        <p>Loading...</p>
+      </div>
+    )
   }
 
   return (
@@ -39,6 +62,22 @@ const BlogPage = () => {
         <strong>{blog.likes}</strong> likes
       </p>
 
+      <h3>Add comment</h3>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          value={comment}
+          onChange={(e) =>
+            setComment(e.target.value)
+          }
+          placeholder="Write a comment..."
+        />
+
+        <button type="submit">
+          Add comment
+        </button>
+      </form>
+
       <h3>Comments</h3>
 
       {blog.comments.length === 0 ? (
@@ -46,7 +85,9 @@ const BlogPage = () => {
       ) : (
         <ul>
           {blog.comments.map((comment, index) => (
-            <li key={index}>{comment}</li>
+            <li key={index}>
+              {comment}
+            </li>
           ))}
         </ul>
       )}
