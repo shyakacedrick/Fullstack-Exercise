@@ -17,22 +17,15 @@ const Home = ({
   return (
     <div className="container">
       <Menu />
+
       <div className="topbar">
         <div>
           <span className="brand">BlogList</span>
-
           <span className="brand-sub">Personal blogs · simple CMS</span>
         </div>
 
         <div className="actions">
-          <span
-            style={{
-              color: 'var(--text-secondary)',
-              fontWeight: 600,
-            }}
-          >
-            {user.name || user.username}
-          </span>
+          <span className="user-chip">{user.name || user.username}</span>
 
           <button className="btn btn-secondary" onClick={handleLogout}>
             <LogoutIcon />
@@ -44,6 +37,9 @@ const Home = ({
       <Notification />
 
       <h1 className="page-title">Blogs</h1>
+      <p className="page-subtitle">
+        Capture ideas, share updates, and keep your reading list tidy.
+      </p>
 
       <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <div className="card">

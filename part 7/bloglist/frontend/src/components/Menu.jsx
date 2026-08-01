@@ -1,17 +1,21 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const Menu = () => {
   return (
-    <nav
-      style={{
-        display: 'flex',
-        gap: '1rem',
-        marginBottom: '1rem',
-      }}
-    >
-      <Link to="/">Blogs</Link>
+    <nav className="app-nav" aria-label="Primary">
+      <NavLink
+        to="/"
+        className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+      >
+        Blogs
+      </NavLink>
 
-      <Link to="/users">Users</Link>
+      <NavLink
+        to="/users"
+        className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+      >
+        Users
+      </NavLink>
     </nav>
   )
 }

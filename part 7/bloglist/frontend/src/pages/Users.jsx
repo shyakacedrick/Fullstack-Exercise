@@ -14,30 +14,35 @@ const Users = () => {
 
   return (
     <div className="container">
-      <h2>Users</h2>
+      <Menu />
 
-      <table>
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Blogs created</th>
-          </tr>
-        </thead>
+      <h1 className="page-title">Users</h1>
+      <p className="page-subtitle">
+        Browse authors and see how much each person has shared.
+      </p>
 
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>
-                <Link to={`/users/${user.id}`}>
-                  {user.name}
-                </Link>
-              </td>
-
-              <td>{user.blogs.length}</td>
+      <div className="card">
+        <table className="users-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Blogs created</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>
+                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                </td>
+
+                <td>{user.blogs.length}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

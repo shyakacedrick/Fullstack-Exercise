@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 
 import userService from '../services/users'
 import Menu from '../components/Menu'
@@ -24,17 +24,22 @@ const User = () => {
     <div className="container">
       <Menu />
 
-      <h2>{user.name}</h2>
+      <h1 className="page-title">{user.name}</h1>
+      <p className="page-subtitle">
+        This author has contributed the following posts.
+      </p>
 
-      <h3>Added blogs</h3>
+      <div className="card page-card">
+        <h3>Added blogs</h3>
 
-      <ul>
-        {user.blogs.map((blog) => (
-          <li key={blog.id}>
-            {blog.title}
-          </li>
-        ))}
-      </ul>
+        <ul className="blog-list">
+          {user.blogs.map((blog) => (
+            <li key={blog.id}>
+              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }

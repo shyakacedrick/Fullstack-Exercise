@@ -1,32 +1,27 @@
-const LoginForm = ({
-  username,
-  password,
-  handleLogin,
-}) => {
+const LoginForm = ({ username, password, handleLogin }) => {
   return (
-    <form onSubmit={handleLogin}>
+    <form className="form" onSubmit={handleLogin}>
       <div className="form-group">
-        <label>Username</label>
+        <label className="label">Username</label>
 
         <input
+          className="input"
           {...username.input}
           placeholder="Enter username"
         />
       </div>
 
       <div className="form-group">
-        <label>Password</label>
+        <label className="label">Password</label>
 
         <input
+          className="input"
           {...password.input}
           placeholder="Enter password"
         />
       </div>
 
-      <button
-        className="btn btn-primary"
-        type="submit"
-      >
+      <button className="btn btn-primary" type="submit">
         Login
       </button>
     </form>

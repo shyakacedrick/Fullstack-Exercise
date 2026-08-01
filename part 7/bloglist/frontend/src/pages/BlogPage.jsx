@@ -46,51 +46,52 @@ const BlogPage = () => {
     <div className="container">
       <Menu />
 
-      <h2>
-        {blog.title} {blog.author}
-      </h2>
+      <div className="card page-card">
+        <h2>{blog.title}</h2>
+        <p className="page-subtitle">by {blog.author}</p>
 
-      <a
-        href={blog.url}
-        target="_blank"
-        rel="noreferrer"
-      >
-        {blog.url}
-      </a>
+        <a
+          href={blog.url}
+          target="_blank"
+          rel="noreferrer"
+          className="blog-url"
+        >
+          {blog.url}
+        </a>
 
-      <p>
-        <strong>{blog.likes}</strong> likes
-      </p>
+        <div className="likes-pill">👍 {blog.likes} likes</div>
 
-      <h3>Add comment</h3>
+        <div className="card" style={{ padding: '1rem' }}>
+          <h3>Add comment</h3>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          value={comment}
-          onChange={(e) =>
-            setComment(e.target.value)
-          }
-          placeholder="Write a comment..."
-        />
+          <form className="form" onSubmit={handleSubmit}>
+            <input
+              className="input"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write a comment..."
+            />
 
-        <button type="submit">
-          Add comment
-        </button>
-      </form>
+            <button className="btn btn-primary" type="submit">
+              Add comment
+            </button>
+          </form>
+        </div>
 
-      <h3>Comments</h3>
+        <div>
+          <h3>Comments</h3>
 
-      {blog.comments.length === 0 ? (
-        <p>No comments yet.</p>
-      ) : (
-        <ul>
-          {blog.comments.map((comment, index) => (
-            <li key={index}>
-              {comment}
-            </li>
-          ))}
-        </ul>
-      )}
+          {blog.comments.length === 0 ? (
+            <p className="page-subtitle">No comments yet.</p>
+          ) : (
+            <ul className="blog-list">
+              {blog.comments.map((comment, index) => (
+                <li key={index}>{comment}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
