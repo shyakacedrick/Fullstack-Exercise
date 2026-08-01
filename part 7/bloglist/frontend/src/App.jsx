@@ -16,6 +16,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Home from './components/Home'
 import ErrorBoundary from './components/ErrorBoundary'
+
 import NotFound from './Pages/NotFound'
 
 import LogoutIcon from '@mui/icons-material/Logout'
@@ -66,9 +67,7 @@ const App = () => {
       login(loggedUser)
 
       showNotification(
-        `Welcome ${
-          loggedUser.name || loggedUser.username
-        }!`,
+        `Welcome ${loggedUser.name || loggedUser.username}!`,
         'success'
       )
 
@@ -86,12 +85,12 @@ const App = () => {
 
   const handleLogout = () => {
     logout()
-
+  
     showNotification(
       'Logged out successfully',
       'success'
     )
-
+  
     navigate('/login')
   }
 
