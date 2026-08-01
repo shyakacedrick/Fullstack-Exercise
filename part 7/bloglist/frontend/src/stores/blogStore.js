@@ -1,54 +1,63 @@
 import { create } from 'zustand'
 import blogService from '../services/blogs'
 
-const useBlogStore = create((set) => ({
+const useBlogStore = create((set, get) => ({
   blogs: [],
 
   initializeBlogs: async () => {
     const blogs = await blogService.getAll()
 
     set({
-      blogs,
+      blogs: blogs.sort((a, b) => b.likes - a.likes),
     })
   },
 
   createBlog: async (blogObject) => {
     const newBlog = await blogService.create(blogObject)
 
-    set((state) => ({
-      blogs: state.blogs.concat(newBlog),
-    }))
+    set({
+      blogs: [...get().blogs, newBlog].sort(
+        (a, b) => b.likes - a.likes
+      ),
+    })
 
     return newBlog
   },
 
   likeBlog: async (blog) => {
-    const updated = {
+    const updatedBlog = {
       ...blog,
       likes: blog.likes + 1,
       user: blog.user.id || blog.user,
     }
 
-    const returnedBlog =
-      await blogService.update(blog.id, updated)
+    const returnedBlog = await blogService.update(
+      blog.id,
+      updatedBlog
+    )
 
-    set((state) => ({
-      blogs: state.blogs.map((b) =>
-        b.id === returnedBlog.id
-          ? returnedBlog
-          : b
-      ),
-    }))
+    set({
+      blogs: get()
+        .blogs
+        .map((b) =>
+          b.id === returnedBlog.id
+            ? returnedBlog
+            : b
+        )
+        .sort((a, b) => b.likes - a.likes),
+    })
+
+    return returnedBlog
   },
 
   deleteBlog: async (blog) => {
     await blogService.remove(blog.id)
 
-    set((state) => ({
-      blogs: state.blogs.filter(
+    set({
+      blogs: get().blogs.filter(
         (b) => b.id !== blog.id
       ),
-    }))
+    })
   },
 }))
 
