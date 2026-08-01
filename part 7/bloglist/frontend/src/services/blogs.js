@@ -38,8 +38,14 @@ const remove = async (id) => {
   await axios.delete(`${baseUrl}/${id}`, config)
 }
 
+const getById = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`)
+  return response.data
+}
+
 export default {
   getAll,
+  getById,
   create,
   update,
   remove,

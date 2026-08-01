@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState } from 'react'  
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
   const [visible, setVisible] = useState(false)
@@ -38,8 +39,11 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
         <>
           <div className="blog-header">
             <div>
-              <h3 className="blog-title">{blog.title}</h3>
-
+                <h3 className="blog-title">
+                  <Link to={`/blogs/${blog.id}`}>
+                    {blog.title}
+                  </Link>
+                </h3>
               <p className="blog-author">{blog.author}</p>
             </div>
 
