@@ -1,22 +1,22 @@
-import { useState } from 'react'
+import useField from '../hooks/useField'
 
 const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
     createBlog({
-      title,
-      author,
-      url,
+      title: title.input.value,
+      author: author.input.value,
+      url: url.input.value,
     })
 
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    title.reset()
+    author.reset()
+    url.reset()
   }
 
   return (
@@ -29,12 +29,12 @@ const BlogForm = ({ createBlog }) => {
         <label className="label" htmlFor="title">
           Title
         </label>
+
         <input
           id="title"
           className="input"
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
           placeholder="My new blog post"
+          {...title.input}
         />
       </div>
 
@@ -42,12 +42,12 @@ const BlogForm = ({ createBlog }) => {
         <label className="label" htmlFor="author">
           Author
         </label>
+
         <input
           id="author"
           className="input"
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
           placeholder="Author name"
+          {...author.input}
         />
       </div>
 
@@ -55,16 +55,19 @@ const BlogForm = ({ createBlog }) => {
         <label className="label" htmlFor="url">
           URL
         </label>
+
         <input
           id="url"
           className="input"
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
           placeholder="https://example.com/article"
+          {...url.input}
         />
       </div>
 
-      <button className="btn btn-primary" type="submit">
+      <button
+        className="btn btn-primary"
+        type="submit"
+      >
         Create
       </button>
     </form>

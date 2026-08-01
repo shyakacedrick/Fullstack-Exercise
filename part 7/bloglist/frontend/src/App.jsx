@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 
 import './App.css'
+
+import useField from './hooks/useField'
 
 import loginService from './services/login'
 
@@ -24,8 +26,8 @@ import LogoutIcon from '@mui/icons-material/Logout'
 const App = () => {
   const navigate = useNavigate()
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
 
   const blogFormRef = useRef()
 
@@ -60,19 +62,21 @@ const App = () => {
 
     try {
       const loggedUser = await loginService.login({
-        username,
-        password,
+        username: username.input.value,
+        password: password.input.value,
       })
 
       login(loggedUser)
 
       showNotification(
-        `Welcome ${loggedUser.name || loggedUser.username}!`,
+        `Welcome ${
+          loggedUser.name || loggedUser.username
+        }!`,
         'success'
       )
 
-      setUsername('')
-      setPassword('')
+      username.reset()
+      password.reset()
 
       navigate('/')
     } catch {
@@ -213,8 +217,6 @@ const App = () => {
                   <LoginForm
                     username={username}
                     password={password}
-                    setUsername={setUsername}
-                    setPassword={setPassword}
                     handleLogin={handleLogin}
                   />
                 </section>

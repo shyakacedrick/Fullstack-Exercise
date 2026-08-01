@@ -1,19 +1,15 @@
 import { create } from 'zustand'
 
 import blogService from '../services/blogs'
+import persistentUser from '../services/persistentUser'
 
 const useUserStore = create((set) => ({
   user: null,
 
   initializeUser: () => {
-    const loggedUserJSON =
-      window.localStorage.getItem(
-        'loggedBlogAppUser'
-      )
+    const user = persistentUser.getUser()
 
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-
+    if (user) {
       blogService.setToken(user.token)
 
       set({
@@ -23,10 +19,7 @@ const useUserStore = create((set) => ({
   },
 
   login: (user) => {
-    window.localStorage.setItem(
-      'loggedBlogAppUser',
-      JSON.stringify(user)
-    )
+    persistentUser.saveUser(user)
 
     blogService.setToken(user.token)
 
@@ -36,9 +29,7 @@ const useUserStore = create((set) => ({
   },
 
   logout: () => {
-    window.localStorage.removeItem(
-      'loggedBlogAppUser'
-    )
+    persistentUser.removeUser()
 
     blogService.setToken(null)
 
