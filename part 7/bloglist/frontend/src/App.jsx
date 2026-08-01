@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 
 import './App.css'
 
 import loginService from './services/login'
+import blogService from './services/blogs'
 
 import useBlogStore from './stores/blogStore'
 import useUserStore from './stores/userStore'
@@ -30,8 +32,14 @@ const App = () => {
   const blogFormRef = useRef()
 
   // BLOG STORE
-  const blogs = useBlogStore((state) => state.blogs)
-  const initializeBlogs = useBlogStore((state) => state.initializeBlogs)
+  const {
+    data: blogs = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['blogs'],
+    queryFn: blogService.getAll,
+  })
   const createBlogStore = useBlogStore((state) => state.createBlog)
   const likeBlogStore = useBlogStore((state) => state.likeBlog)
   const deleteBlogStore = useBlogStore((state) => state.deleteBlog)
@@ -46,10 +54,6 @@ const App = () => {
   const showNotification = useNotificationStore(
     (state) => state.showNotification
   )
-
-  useEffect(() => {
-    initializeBlogs()
-  }, [initializeBlogs])
 
   useEffect(() => {
     initializeUser()
@@ -85,12 +89,12 @@ const App = () => {
 
   const handleLogout = () => {
     logout()
-  
+
     showNotification(
       'Logged out successfully',
       'success'
     )
-  
+
     navigate('/login')
   }
 
@@ -150,6 +154,9 @@ const App = () => {
       )
     }
   }
+
+  if (isLoading) { return <div>Loading blogs...</div> }
+  if (isError) { return <div>Failed to load blogs.</div> }
 
   return (
     <ErrorBoundary>
