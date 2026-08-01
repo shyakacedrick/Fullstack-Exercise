@@ -21,6 +21,7 @@ import Home from './components/Home'
 import ErrorBoundary from './components/ErrorBoundary'
 
 import Users from './pages/Users'
+import User from './pages/User'
 import NotFound from './Pages/NotFound'
 
 import LogoutIcon from '@mui/icons-material/Logout'
@@ -236,6 +237,17 @@ const App = () => {
                   />
                 </section>
               </div>
+            )
+          }
+        />
+
+        <Route
+          path="/users/:id"
+          element={
+            user ? (
+              <User />
+            ) : (
+              <Navigate to="/login" replace />
             )
           }
         />
