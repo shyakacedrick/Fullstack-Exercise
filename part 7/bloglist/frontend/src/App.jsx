@@ -11,6 +11,7 @@ import useBlogStore from './stores/blogStore'
 import useUserStore from './stores/userStore'
 import useNotificationStore from './stores/notificationStore'
 
+import Menu from './components/Menu'
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
@@ -19,6 +20,7 @@ import Togglable from './components/Togglable'
 import Home from './components/Home'
 import ErrorBoundary from './components/ErrorBoundary'
 
+import Users from './pages/Users'
 import NotFound from './Pages/NotFound'
 
 import LogoutIcon from '@mui/icons-material/Logout'
@@ -157,7 +159,20 @@ const App = () => {
 
   return (
     <ErrorBoundary>
+
       <Routes>
+
+        <Route
+          path="/users"
+          element={
+            user ? (
+              <Users />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
         <Route
           path="/"
           element={

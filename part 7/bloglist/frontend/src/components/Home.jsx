@@ -1,3 +1,5 @@
+import Menu from './Menu'
+
 const Home = ({
   blogs,
   user,
@@ -14,6 +16,7 @@ const Home = ({
 }) => {
   return (
     <div className="container">
+      <Menu />
       <div className="topbar">
         <div>
           <span className="brand">BlogList</span>
