@@ -93,6 +93,7 @@ const typeDefs = `
     name: String!
     born: Int
     id: ID!
+    bookCount: Int!
   }
 
   type Query {
@@ -110,7 +111,14 @@ const resolvers = {
     allBooks: () => books,
     allAuthors: () => authors,
   },
+
+  Author: {
+    bookCount: (root) => {
+      return books.filter(book => book.author === root.name).length
+    },
+  },
 }
+
 
 const server = new ApolloServer({
   typeDefs,
