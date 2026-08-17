@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 import { useQuery } from '@apollo/client/react'
 
 const ALL_BOOKS = gql`
-  query {
+  query allBooks {
     allBooks {
       id
       title
