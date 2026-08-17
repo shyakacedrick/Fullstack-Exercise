@@ -82,10 +82,18 @@ const Authors = (props) => {
         <div>
           <label>
             name
-            <input
+            <select
               value={name}
               onChange={({ target }) => setName(target.value)}
-            />
+            >
+              <option value="">select author</option>
+
+              {authors.map((author) => (
+                <option key={author.id} value={author.name}>
+                  {author.name}
+                </option>
+              ))}
+            </select>
           </label>
         </div>
 
@@ -100,7 +108,7 @@ const Authors = (props) => {
           </label>
         </div>
 
-        <button type="submit">set birth year</button>
+        <button type="submit">Update Author</button>
       </form>
     </div>
   )
