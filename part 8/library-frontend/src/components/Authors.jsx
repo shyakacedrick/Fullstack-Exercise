@@ -12,7 +12,6 @@ const ALL_AUTHORS = gql`
     }
   }
 `
-
 const EDIT_AUTHOR = gql`
   mutation editAuthor($name: String!, $setBornTo: Int!) {
     editAuthor(name: $name, setBornTo: $setBornTo) {
@@ -27,7 +26,6 @@ const Authors = (props) => {
   const [born, setBorn] = useState('')
 
   const result = useQuery(ALL_AUTHORS)
-
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: ['allAuthors'],
   })
