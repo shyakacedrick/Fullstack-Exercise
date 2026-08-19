@@ -1,8 +1,9 @@
 name: E2E tests (library)
 
 on:
-  # push:
-  #   branches: [ main, master ]
+  # ===== EXERCISE 24: Run frontend E2E checks after pushes =====
+  push:
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:

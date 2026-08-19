@@ -14,6 +14,8 @@ const LOGIN = gql`
 const Login = ({ show, setToken, setPage }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  // ===== EXERCISE 24: Give feedback when an automated login attempt fails =====
+  const [error, setError] = useState(null)
   const [login] = useMutation(LOGIN)
 
   if (!show) {
@@ -23,19 +25,27 @@ const Login = ({ show, setToken, setPage }) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    const result = await login({
-      variables: { username, password },
-    })
+    setError(null)
 
-    const token = result.data.login.value
-    localStorage.setItem('library-user-token', token)
-    setToken(token)
-    setPage('authors')
+    try {
+      const result = await login({
+        variables: { username, password },
+      })
+
+      const token = result.data.login.value
+      localStorage.setItem('library-user-token', token)
+      setToken(token)
+      setPage('authors')
+    } catch (error) {
+      setError('login failed')
+    }
   }
 
   return (
     <div>
       <h2>login</h2>
+
+      {error && <div>{error}</div>}
 
       <form onSubmit={submit}>
         <div>

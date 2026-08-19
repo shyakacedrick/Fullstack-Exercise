@@ -100,6 +100,8 @@ const NewBook = (props) => {
 
         <div>
           <label>
+            {/* ===== EXERCISE 24: Give the genre input an accessible label ===== */}
+            genre
             <input
               value={genre}
               onChange={({ target }) => setGenre(target.value)}

@@ -79,13 +79,15 @@ const Authors = (props) => {
       {/* ===== EXERCISE 19: Only logged-in users may edit author birth years ===== */}
       {props.token && (
         <>
-          <h3>Set birth year</h3>
+          {/* ===== EXERCISE 24: Match the required author-edit form labels ===== */}
+          <h3>Set birthyear</h3>
 
           <form onSubmit={submit}>
             <div>
               <label>
                 name
                 <select
+                  name="name"
                   value={name}
                   onChange={({ target }) => setName(target.value)}
                 >
@@ -111,7 +113,7 @@ const Authors = (props) => {
               </label>
             </div>
 
-            <button type="submit">Update Author</button>
+            <button type="submit">update author</button>
           </form>
         </>
       )}
