@@ -11,6 +11,9 @@ import App from './App.jsx'
 const client = new ApolloClient({
   link: new HttpLink({
     uri: 'http://localhost:4000/',
+    headers: {
+      'content-type': 'application/json',
+    },
   }),
   cache: new InMemoryCache(),
 })

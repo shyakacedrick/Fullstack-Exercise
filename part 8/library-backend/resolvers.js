@@ -1,6 +1,9 @@
+const jwt = require('jsonwebtoken')
 const { GraphQLError } = require('graphql')
+
 const Author = require('./models/Author')
 const Book = require('./models/Book')
+const User = require('./models/User')
 
 const resolvers = {
   Query: {
@@ -31,10 +34,25 @@ const resolvers = {
     allAuthors: async () => {
       return Author.find({})
     },
+
+    // ===== EXERCISE 16: Return the user authenticated by the request token =====
+    me: (root, args, context) => context.currentUser,
+    // ===== EXERCISE 16: End me query =====
+  },
+
+  Author: {
+    bookCount: async (root) => Book.countDocuments({ author: root._id }),
   },
 
   Mutation: {
-    addBook: async (root, args) => {
+    // ===== EXERCISE 16: Only authenticated users may add books =====
+    addBook: async (root, args, context) => {
+      if (!context.currentUser) {
+        throw new GraphQLError('not authenticated', {
+          extensions: { code: 'UNAUTHENTICATED' },
+        })
+      }
+
       try {
         let author = await Author.findOne({ name: args.author })
 
@@ -65,7 +83,14 @@ const resolvers = {
       }
     },
 
-    editAuthor: async (root, args) => {
+    // ===== EXERCISE 16: Only authenticated users may edit authors =====
+    editAuthor: async (root, args, context) => {
+      if (!context.currentUser) {
+        throw new GraphQLError('not authenticated', {
+          extensions: { code: 'UNAUTHENTICATED' },
+        })
+      }
+
       const author = await Author.findOne({
         name: args.name,
       })
@@ -80,6 +105,55 @@ const resolvers = {
 
       return author
     },
+
+    createUser: async (root, args) => {
+      // ===== EXERCISE 16: Users share the course's hardcoded login password =====
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre,
+      })
+
+      try {
+        return await user.save()
+      } catch (error) {
+        throw new GraphQLError('creating the user failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.username,
+          },
+        })
+      }
+    },
+    
+    login: async (root, args) => {
+      const user = await User.findOne({
+        username: args.username,
+      })
+  
+      // ===== EXERCISE 16: The exercise specifies one shared password: "secret" =====
+      const passwordCorrect = args.password === 'secret'
+  
+      if (!user || !passwordCorrect) {
+        throw new GraphQLError('wrong credentials', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+          },
+        })
+      }
+  
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+  
+      return {
+        value: jwt.sign(
+          userForToken,
+          process.env.JWT_SECRET
+        ),
+      }
+    },
+
   },
 }
 
