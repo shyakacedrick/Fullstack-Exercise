@@ -30,8 +30,10 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
 
+  // ===== EXERCISE 23: Refresh cached book lists and genre buttons after adding =====
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: ['allBooks', 'allAuthors'],
+    refetchQueries: ['allBooks', 'allGenres', 'allAuthors'],
+    awaitRefetchQueries: true,
   })
 
   if (!props.show) {
