@@ -4,17 +4,30 @@ import {
   ApolloClient,
   InMemoryCache,
   HttpLink,
+  from,
 } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
+import { setContext } from '@apollo/client/link/context'
 import App from './App.jsx'
 
-const client = new ApolloClient({
-  link: new HttpLink({
-    uri: 'http://localhost:4000/',
+const httpLink = new HttpLink({
+  uri: 'http://localhost:4000/',
+})
+
+// ===== EXERCISE 19: Send the saved login token with every GraphQL request =====
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('library-user-token')
+
+  return {
     headers: {
-      'content-type': 'application/json',
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
     },
-  }),
+  }
+})
+
+const client = new ApolloClient({
+  link: from([authLink, httpLink]),
   cache: new InMemoryCache(),
 })
 

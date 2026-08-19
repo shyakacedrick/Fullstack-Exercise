@@ -76,40 +76,45 @@ const Authors = (props) => {
         </tbody>
       </table>
 
-      <h3>Set birth year</h3>
+      {/* ===== EXERCISE 19: Only logged-in users may edit author birth years ===== */}
+      {props.token && (
+        <>
+          <h3>Set birth year</h3>
 
-      <form onSubmit={submit}>
-        <div>
-          <label>
-            name
-            <select
-              value={name}
-              onChange={({ target }) => setName(target.value)}
-            >
-              <option value="">select author</option>
+          <form onSubmit={submit}>
+            <div>
+              <label>
+                name
+                <select
+                  value={name}
+                  onChange={({ target }) => setName(target.value)}
+                >
+                  <option value="">select author</option>
 
-              {authors.map((author) => (
-                <option key={author.id} value={author.name}>
-                  {author.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+                  {authors.map((author) => (
+                    <option key={author.id} value={author.name}>
+                      {author.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
 
-        <div>
-          <label>
-            born
-            <input
-              type="number"
-              value={born}
-              onChange={({ target }) => setBorn(target.value)}
-            />
-          </label>
-        </div>
+            <div>
+              <label>
+                born
+                <input
+                  type="number"
+                  value={born}
+                  onChange={({ target }) => setBorn(target.value)}
+                />
+              </label>
+            </div>
 
-        <button type="submit">Update Author</button>
-      </form>
+            <button type="submit">Update Author</button>
+          </form>
+        </>
+      )}
     </div>
   )
 }
