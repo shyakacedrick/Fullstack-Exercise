@@ -5,6 +5,8 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 5,
+    // ===== EXERCISE 17: The checkup requires book titles to be unique =====
+    unique: true,
   },
   published: {
     type: Number,

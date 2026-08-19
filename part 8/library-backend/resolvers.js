@@ -45,6 +45,20 @@ const resolvers = {
   },
 
   Mutation: {
+    // ===== EXERCISE 17: Reset data only in the isolated test environment =====
+    _resetDatabase: async () => {
+      if (process.env.NODE_ENV !== 'test') {
+        throw new GraphQLError('_resetDatabase is only available in test mode')
+      }
+
+      await Author.deleteMany({})
+      await Book.deleteMany({})
+      await User.deleteMany({})
+
+      return true
+    },
+    // ===== EXERCISE 17: End test-only database reset =====
+
     // ===== EXERCISE 16: Only authenticated users may add books =====
     addBook: async (root, args, context) => {
       if (!context.currentUser) {

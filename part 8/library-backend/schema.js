@@ -54,6 +54,9 @@ const typeDefs = `
       username: String!
       password: String!
     ): Token
+
+    # ===== EXERCISE 17: Test-only database reset mutation =====
+    _resetDatabase: Boolean
   }
 `
 
