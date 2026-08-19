@@ -2,10 +2,10 @@ import { gql } from '@apollo/client'
 import { useQuery } from '@apollo/client/react'
 import { useState } from 'react'
 
-// ===== EXERCISE 18: Fix the list of books query after the backend change =====
+// ===== EXERCISE 22: Ask the server for books matching the selected genre =====
 const ALL_BOOKS = gql`
-  query allBooks {
-    allBooks {
+  query allBooks($genre: String) {
+    allBooks(genre: $genre) {
       id
       title
       # author is an Author object, so the book list must request its name
@@ -19,25 +19,35 @@ const ALL_BOOKS = gql`
   }
 `
 
+// ===== EXERCISE 22: Keep all genre buttons visible, even after filtering =====
+const ALL_GENRES = gql`
+  query allGenres {
+    allBooks {
+      genres
+    }
+  }
+`
+
 const Books = (props) => {
-  // ===== EXERCISE 20: Keep the selected genre in component state =====
+  // ===== EXERCISE 22: Changing this value triggers a new GraphQL request =====
   const [selectedGenre, setSelectedGenre] = useState(null)
-  const result = useQuery(ALL_BOOKS)
+  const result = useQuery(ALL_BOOKS, {
+    variables: { genre: selectedGenre },
+  })
+  const genresResult = useQuery(ALL_GENRES)
 
   if (!props.show) {
     return null
   }
 
-  if (result.loading) {
+  if (result.loading || genresResult.loading) {
     return <div>loading...</div>
   }
 
   const books = result.data.allBooks
-  // ===== EXERCISE 20: Derive the filter buttons and visible books in React =====
-  const genres = [...new Set(books.flatMap((book) => book.genres))]
-  const booksToShow = selectedGenre
-    ? books.filter((book) => book.genres.includes(selectedGenre))
-    : books
+  const genres = [
+    ...new Set(genresResult.data.allBooks.flatMap((book) => book.genres)),
+  ]
 
   return (
     <div>
@@ -53,7 +63,7 @@ const Books = (props) => {
             <th>published</th>
           </tr>
 
-          {booksToShow.map((book) => (
+          {books.map((book) => (
             <tr key={book.id}>
               <td>{book.title}</td>
               {/* Display the author name used by the fixed book list query */}
