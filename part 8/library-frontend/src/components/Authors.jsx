@@ -35,7 +35,7 @@ const Authors = (props) => {
   }
 
   if (result.loading) {
-    return <div>loading...</div>
+    return <div className="loading-state">Loading the writers’ room…</div>
   }
 
   const authors = result.data.allAuthors
@@ -55,10 +55,10 @@ const Authors = (props) => {
   }
 
   return (
-    <div>
-      <h2>authors</h2>
+    <section className="view-panel authors-view">
+      <div className="view-heading"><span className="eyebrow">The people behind the pages</span><h2>authors</h2><p>Explore the minds that shape this collection.</p></div>
 
-      <table>
+      <div className="table-shell"><table>
         <tbody>
           <tr>
             <th></th>
@@ -74,13 +74,13 @@ const Authors = (props) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table></div>
 
       {/* ===== EXERCISE 19: Only logged-in users may edit author birth years ===== */}
       {props.token && (
         <>
           {/* ===== EXERCISE 24: Match the required author-edit form labels ===== */}
-          <h3>Set birthyear</h3>
+          <div className="form-card compact-form"><span className="eyebrow">Editorial detail</span><h3>Set birthyear</h3>
 
           <form onSubmit={submit}>
             <div>
@@ -113,11 +113,12 @@ const Authors = (props) => {
               </label>
             </div>
 
-            <button type="submit">update author</button>
+            <button className="button button--primary" type="submit">update author</button>
           </form>
+          </div>
         </>
       )}
-    </div>
+    </section>
   )
 }
 

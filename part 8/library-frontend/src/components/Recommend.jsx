@@ -38,23 +38,21 @@ const Recommend = ({ show }) => {
   }
 
   if (meResult.loading || booksResult.loading) {
-    return <div>loading...</div>
+    return <div className="loading-state">Matching titles to your taste…</div>
   }
 
   if (!favoriteGenre) {
-    return <div>could not find your favourite genre</div>
+    return <div className="loading-state">Could not find your favourite genre.</div>
   }
 
   const books = booksResult.data.allBooks
 
   return (
-    <div>
-      <h2>recommendations</h2>
-      <p>
-        books in your favorite genre <strong>{favoriteGenre}</strong>
-      </p>
+    <section className="view-panel recommendations-view">
+      <div className="view-heading"><span className="eyebrow">Picked for you</span><h2>recommendations</h2>
+      <p className="filter-summary">books in your favorite genre <strong>{favoriteGenre}</strong></p></div>
 
-      <table>
+      <div className="table-shell"><table>
         <tbody>
           <tr>
             <th>title</th>
@@ -70,8 +68,8 @@ const Recommend = ({ show }) => {
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </table></div>
+    </section>
   )
 }
 

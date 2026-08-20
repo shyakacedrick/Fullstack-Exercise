@@ -19,35 +19,46 @@ const App = () => {
   }
 
   return (
-    <div>
-      <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
+    <div className="app-shell">
+      <header className="site-header">
+        <button className="brand" onClick={() => setPage('authors')} aria-label="Shelfmark home">
+          <span className="brand-mark">S</span>
+          <span><strong>Shelfmark</strong><small>the considered library</small></span>
+        </button>
+        {/* ===== UI REDESIGN: Responsive, state-aware primary navigation ===== */}
+        <nav className="main-nav" aria-label="Main navigation">
+          <button className={`nav-link ${page === 'authors' ? 'is-active' : ''}`} onClick={() => setPage('authors')}>authors</button>
+          <button className={`nav-link ${page === 'books' ? 'is-active' : ''}`} onClick={() => setPage('books')}>books</button>
         {token ? (
           <>
-            <button onClick={() => setPage('add')}>add book</button>
+            <button className={`nav-link ${page === 'add' ? 'is-active' : ''}`} onClick={() => setPage('add')}>add book</button>
             {/* ===== EXERCISE 21: Recommendations are available to logged-in users ===== */}
-            <button onClick={() => setPage('recommend')}>recommend</button>
-            <button onClick={logout}>logout</button>
+            <button className={`nav-link ${page === 'recommend' ? 'is-active' : ''}`} onClick={() => setPage('recommend')}>recommend</button>
+            <button className="nav-link nav-link--quiet" onClick={logout}>logout</button>
           </>
         ) : (
-          <button onClick={() => setPage('login')}>login</button>
+          <button className={`nav-link nav-link--login ${page === 'login' ? 'is-active' : ''}`} onClick={() => setPage('login')}>login</button>
         )}
-      </div>
+        </nav>
+      </header>
 
-      <Authors show={page === 'authors'} token={token} />
+      <main className="content-wrap">
+        <Authors show={page === 'authors'} token={token} />
 
-      <Books show={page === 'books'} />
+        <Books show={page === 'books'} />
 
-      <NewBook show={page === 'add' && Boolean(token)} />
+        <NewBook show={page === 'add' && Boolean(token)} />
 
-      <Recommend show={page === 'recommend' && Boolean(token)} />
+        <Recommend show={page === 'recommend' && Boolean(token)} />
 
-      <Login
-        show={page === 'login'}
-        setToken={setToken}
-        setPage={setPage}
-      />
+        <Login
+          show={page === 'login'}
+          setToken={setToken}
+          setPage={setPage}
+        />
+      </main>
+
+      <footer className="site-footer"><span>© 2026 Shelfmark</span><span>Curated stories, one shelf at a time.</span></footer>
     </div>
   )
 }

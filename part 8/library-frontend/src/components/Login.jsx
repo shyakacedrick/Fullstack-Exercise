@@ -42,10 +42,12 @@ const Login = ({ show, setToken, setPage }) => {
   }
 
   return (
-    <div>
-      <h2>login</h2>
+    <section className="login-layout">
+      <div className="login-copy"><span className="eyebrow">Members’ edition</span><h2>Welcome back<br /><i>to the stacks.</i></h2><p>Sign in to shape the library, contribute new books, and keep your reading world personal.</p></div>
+      <div className="form-card login-card">
+      <h3>login</h3>
 
-      {error && <div>{error}</div>}
+      {error && <div className="form-error">{error}</div>}
 
       <form onSubmit={submit}>
         <div>
@@ -69,9 +71,11 @@ const Login = ({ show, setToken, setPage }) => {
           </label>
         </div>
 
-        <button type="submit">login</button>
+        <button className="button button--primary" type="submit">login</button>
       </form>
-    </div>
+      <small className="login-note">For this course project, use the shared password <code>secret</code>.</small>
+      </div>
+    </section>
   )
 }
 

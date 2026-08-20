@@ -9,6 +9,7 @@ import {
 import { ApolloProvider } from '@apollo/client/react'
 import { setContext } from '@apollo/client/link/context'
 import App from './App.jsx'
+import './styles.css'
 
 const httpLink = new HttpLink({
   uri: 'http://localhost:4000/',

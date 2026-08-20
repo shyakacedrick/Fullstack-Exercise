@@ -41,7 +41,7 @@ const Books = (props) => {
   }
 
   if (result.loading || genresResult.loading) {
-    return <div>loading...</div>
+    return <div className="loading-state">Finding your next read…</div>
   }
 
   const books = result.data.allBooks
@@ -50,12 +50,12 @@ const Books = (props) => {
   ]
 
   return (
-    <div>
-      <h2>books</h2>
+    <section className="view-panel books-view">
+      <div className="view-heading"><span className="eyebrow">Curated catalogue</span><h2>books</h2><p>A living collection for curious readers.</p></div>
 
-      {selectedGenre && <p>in genre {selectedGenre}</p>}
+      {selectedGenre && <p className="filter-summary">Showing titles in <strong>{selectedGenre}</strong></p>}
 
-      <table>
+      <div className="table-shell"><table>
         <tbody>
           <tr>
             <th>title</th>
@@ -72,18 +72,18 @@ const Books = (props) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table></div>
 
-      <div>
+      <div className="genre-filters" aria-label="Filter books by genre">
         {/* ===== EXERCISE 20: Genre filter controls for the book list ===== */}
         {genres.map((genre) => (
-          <button key={genre} onClick={() => setSelectedGenre(genre)}>
+          <button className={`genre-chip ${selectedGenre === genre ? 'is-selected' : ''}`} key={genre} onClick={() => setSelectedGenre(genre)}>
             {genre}
           </button>
         ))}
-        <button onClick={() => setSelectedGenre(null)}>all genres</button>
+        <button className={`genre-chip ${!selectedGenre ? 'is-selected' : ''}`} onClick={() => setSelectedGenre(null)}>all genres</button>
       </div>
-    </div>
+    </section>
   )
 }
 

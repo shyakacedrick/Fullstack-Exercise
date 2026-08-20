@@ -65,8 +65,8 @@ const NewBook = (props) => {
   }
 
   return (
-    <div>
-      <form onSubmit={submit}>
+    <section className="view-panel form-view"><div className="view-heading"><span className="eyebrow">Add to the archive</span><h2>new book</h2><p>Give a brilliant title a place on the shelf.</p></div>
+      <form className="form-card book-form" onSubmit={submit}>
         <div>
           <label>
             title
@@ -108,16 +108,16 @@ const NewBook = (props) => {
             />
           </label>
 
-          <button onClick={addGenre} type="button">
+          <button className="button button--secondary" onClick={addGenre} type="button">
             add genre
           </button>
         </div>
 
-        <div>genres: {genres.join(' ')}</div>
+        <div className="genre-preview"><span>genres</span>{genres.length ? genres.map((item) => <em key={item}>{item}</em>) : <small>Add at least one genre</small>}</div>
 
-        <button type="submit">create book</button>
+        <button className="button button--primary" type="submit">create book</button>
       </form>
-    </div>
+    </section>
   )
 }
 
