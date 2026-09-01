@@ -1,3 +1,5 @@
+import { isNotNumber } from './utils.ts';
+
 export interface Result {
   periodLength: number;
   trainingDays: number;
@@ -7,6 +9,34 @@ export interface Result {
   target: number;
   average: number;
 }
+
+interface ExerciseValues {
+  target: number;
+  dailyHours: number[];
+}
+
+const parseExerciseArguments = (args: string[]): ExerciseValues => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+
+  if (isNotNumber(args[2])) {
+    throw new Error('Provided values were not numbers!');
+  }
+
+  const target = Number(args[2]);
+  const dailyHours: number[] = [];
+
+  for (let i = 3; i < args.length; i++) {
+    if (isNotNumber(args[i])) {
+      throw new Error('Provided values were not numbers!');
+    }
+    dailyHours.push(Number(args[i]));
+  }
+
+  return {
+    target,
+    dailyHours,
+  };
+};
 
 export const calculateExercises = (dailyHours: number[], target: number): Result => {
   const periodLength = dailyHours.length;
@@ -40,4 +70,13 @@ export const calculateExercises = (dailyHours: number[], target: number): Result
   };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+  const { target, dailyHours } = parseExerciseArguments(process.argv);
+  console.log(calculateExercises(dailyHours, target));
+} catch (error: unknown) {
+  let errorMessage = 'Something bad happened.';
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
+  }
+  console.log(errorMessage);
+}
