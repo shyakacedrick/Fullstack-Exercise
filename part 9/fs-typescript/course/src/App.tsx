@@ -21,6 +21,14 @@ interface CoursePartBackground extends CoursePartBase {
 
 type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground;
 
+/**
+ * Helper function for exhaustive type checking.
+ * TypeScript will error here at compile time if a case is missing.
+ */
+const assertNever = (value: never): never => {
+  throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);
+};
+
 interface HeaderProps {
   name: string;
 }
@@ -33,6 +41,43 @@ interface TotalProps {
   totalExercises: number;
 }
 
+interface PartProps {
+  part: CoursePart;
+}
+
+const Part = ({ part }: PartProps) => {
+  switch (part.kind) {
+    case "basic":
+      return (
+        <div>
+          <strong>{part.name} {part.exerciseCount}</strong>
+          <br />
+          <em>{part.description}</em>
+        </div>
+      );
+    case "group":
+      return (
+        <div>
+          <strong>{part.name} {part.exerciseCount}</strong>
+          <br />
+          project exercises {part.groupProjectCount}
+        </div>
+      );
+    case "background":
+      return (
+        <div>
+          <strong>{part.name} {part.exerciseCount}</strong>
+          <br />
+          <em>{part.description}</em>
+          <br />
+          submit to <a href={part.backgroundMaterial}>{part.backgroundMaterial}</a>
+        </div>
+      );
+    default:
+      return assertNever(part);
+  }
+};
+
 const Header = (props: HeaderProps) => {
   return <h1>{props.name}</h1>;
 };
@@ -42,7 +87,7 @@ const Content = (props: ContentProps) => {
     <div>
       {props.courseParts.map((part) => (
         <p key={part.name}>
-          {part.name} {part.exerciseCount}
+          <Part part={part} />
         </p>
       ))}
     </div>
